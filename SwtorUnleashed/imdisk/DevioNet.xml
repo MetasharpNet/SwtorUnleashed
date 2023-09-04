@@ -1,0 +1,688 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+DevioNet
+</name>
+</assembly>
+<members>
+<member name="F:LTR.IO.ImDisk.Devio.Server.Services.DevioShmService.ObjectName">
+	<summary>
+ Object name of shared memory file mapping object created by this instance.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.Devio.Server.Services.DevioShmService.BufferSize">
+	<summary>
+ Buffer size used by this instance.
+ </summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Services.DevioShmService.DefaultBufferSize">
+	<summary>
+ Buffer size that will be automatically selected on this platform when
+ an instance is created by a constructor without a BufferSize argument.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioShmService.#ctor(System.String,LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider,System.Boolean,System.Int64)">
+	<summary>
+ Creates a new service instance with enough data to later run a service that acts as server end in ImDisk/Devio
+ shared memory based communication.
+ </summary>
+	<param name="ObjectName">Object name of shared memory file mapping object created by this instance.</param>
+	<param name="DevioProvider">IDevioProvider object to that serves as storage backend for this service.</param>
+	<param name="OwnsProvider">Indicates whether DevioProvider object will be automatically closed when this
+ instance is disposed.</param>
+	<param name="BufferSize">Buffer size to use for shared memory I/O communication.</param>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioShmService.#ctor(System.String,LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider,System.Boolean)">
+	<summary>
+ Creates a new service instance with enough data to later run a service that acts as server end in ImDisk/Devio
+ shared memory based communication. A default buffer size will be used.
+ </summary>
+	<param name="ObjectName">Object name of shared memory file mapping object created by this instance.</param>
+	<param name="DevioProvider">IDevioProvider object to that serves as storage backend for this service.</param>
+	<param name="OwnsProvider">Indicates whether DevioProvider object will be automatically closed when this
+ instance is disposed.</param>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioShmService.#ctor(LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider,System.Boolean)">
+	<summary>
+ Creates a new service instance with enough data to later run a service that acts as server end in ImDisk/Devio
+ shared memory based communication. A default buffer size and a random object name will be used.
+ </summary>
+	<param name="DevioProvider">IDevioProvider object to that serves as storage backend for this service.</param>
+	<param name="OwnsProvider">Indicates whether DevioProvider object will be automatically closed when this
+ instance is disposed.</param>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioShmService.#ctor(LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider,System.Boolean,System.Int64)">
+	<summary>
+ Creates a new service instance with enough data to later run a service that acts as server end in ImDisk/Devio
+ shared memory based communication. A random object name will be used.
+ </summary>
+	<param name="DevioProvider">IDevioProvider object to that serves as storage backend for this service.</param>
+	<param name="OwnsProvider">Indicates whether DevioProvider object will be automatically closed when this
+ instance is disposed.</param>
+	<param name="BufferSize">Buffer size to use for shared memory I/O communication.</param>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioShmService.RunService">
+	<summary>
+ Runs service that acts as server end in ImDisk/Devio shared memory based communication. It will first wait for
+ a client to connect, then serve client I/O requests and when client finally requests service to terminate, this
+ method returns to caller. To run service in a worker thread that automatically disposes this object after client
+ disconnection, call StartServiceThread() instead.
+ </summary>
+</member><member name="T:LTR.IO.ImDisk.Devio.Server.Services.DevioShmService">
+	<summary>
+ Class that implements server end of ImDisk/Devio shared memory based communication
+ protocol. It uses an object implementing <see>IDevioProvider</see> interface as
+ storage backend for I/O requests received from client.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.Devio.Client.DevioShmStream.Open(System.String,System.Boolean)">
+	<summary>
+ Creates a new instance by opening an existing Devio shared memory object and starts
+ communication with a Devio service using this shared memory object.
+ </summary>
+	<param name="name">Name of shared memory object to use for communication.</param>
+	<param name="read_only">Specifies if communication should be read-only.</param>
+	<returns>Returns new instance of DevioShmStream.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Client.DevioShmStream.#ctor(System.String,System.Boolean)">
+	<summary>
+ Creates a new instance by opening an existing Devio shared memory object and starts
+ communication with a Devio service using this shared memory object.
+ </summary>
+	<param name="name">Name of shared memory object to use for communication.</param>
+	<param name="read_only">Specifies if communication should be read-only.</param>
+</member><member name="T:LTR.IO.ImDisk.Devio.Client.DevioShmStream">
+	<summary>
+ Derives DevioStream and implements client side of Devio shared memory communication
+ proxy.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.Devio.Server.Services.DevioTcpService.ListenEndPoint">
+	<summary>
+ Server endpoint where this service listens for client connection.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioTcpService.#ctor(System.Net.IPAddress,System.Int32,LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider,System.Boolean)">
+	<summary>
+ Creates a new service instance with enough data to later run a service that acts as server end in ImDisk/Devio
+ TCP/IP based communication.
+ </summary>
+	<param name="ListenAddress">IP address where service should listen for client connection.</param>
+	<param name="ListenPort">IP port where service should listen for client connection.</param>
+	<param name="DevioProvider">IDevioProvider object to that serves as storage backend for this service.</param>
+	<param name="OwnsProvider">Indicates whether DevioProvider object will be automatically closed when this
+ instance is disposed.</param>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioTcpService.#ctor(System.Int32,LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider,System.Boolean)">
+	<summary>
+ Creates a new service instance with enough data to later run a service that acts as server end in ImDisk/Devio
+ TCP/IP based communication.
+ </summary>
+	<param name="ListenPort">IP port where service should listen for client connection. Instance will listen on all
+ interfaces where this port is available.</param>
+	<param name="DevioProvider">IDevioProvider object to that serves as storage backend for this service.</param>
+	<param name="OwnsProvider">Indicates whether DevioProvider object will be automatically closed when this
+ instance is disposed.</param>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioTcpService.RunService">
+	<summary>
+ Runs service that acts as server end in ImDisk/Devio TCP/IP based communication. It will first wait for
+ a client to connect, then serve client I/O requests and when client finally requests service to terminate, this
+ method returns to caller. To run service in a worker thread that automatically disposes this object after client
+ disconnection, call StartServiceThread() instead.
+ </summary>
+</member><member name="T:LTR.IO.ImDisk.Devio.Server.Services.DevioTcpService">
+	<summary>
+ Class that implements server end of ImDisk/Devio TCP/IP based communication protocol.
+ It uses an object implementing <see>IDevioProvider</see> interface as storage backend
+ for I/O requests received from client.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.Devio.Client.DevioStream.ObjectName">
+	<summary>
+ Object name used by proxy implementation.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.Devio.Client.DevioStream.Size">
+	<summary>
+ Virtual disk size of server object.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.Devio.Client.DevioStream.Alignment">
+	<summary>
+ Alignment requirement for I/O at server.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.Devio.Client.DevioStream.Flags">
+	<summary>
+ ImDisk proxy flags specified for proxy connection.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.Devio.Client.DevioStream.#ctor(System.String,System.Boolean)">
+	<summary>
+ Initiates a new instance with supplied object name and read-only flag.
+ </summary>
+	<param name="name">Object name used by proxy implementation.</param>
+	<param name="read_only">Flag set to true to indicate read-only proxy
+ operation.</param>
+</member><member name="P:LTR.IO.ImDisk.Devio.Client.DevioStream.CanRead">
+	<summary>
+ Indicates whether Stream is readable. This implementation returns a
+ constant value of True, because ImDisk/Devio proxy implementations are
+ always readable.
+ </summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.Client.DevioStream.CanSeek">
+	<summary>
+ Indicates whether Stream is seekable. This implementation returns a
+ constant value of True.
+ </summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.Client.DevioStream.CanWrite">
+	<summary>
+ Indicates whether Stream is writable. This implementation returns True
+ unless ProxyFlags property contains IMDPROXY_FLAGS.IMDPROXY_FLAG_RO value.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.Devio.Client.DevioStream.Flush">
+	<summary>
+ This implementation does not do anything.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.Devio.Client.DevioStream.Close">
+	<summary>
+ When overriden in a derived class, closes communication and causes server side to exit.
+ </summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.Client.DevioStream.Length">
+	<summary>
+ Returns current virtual disk size.
+ </summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.Client.DevioStream.Position">
+	<summary>
+ Current byte position in Stream.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.Devio.Client.DevioStream.Seek(System.Int64,System.IO.SeekOrigin)">
+	<summary>
+ Moves current position in Stream.
+ </summary>
+	<param name="offset">Byte offset to move. Can be negative to move backwards.</param>
+	<param name="origin">Origin from where number of bytes to move counts.</param>
+	<returns>Returns new absolute position in Stream.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Client.DevioStream.SetLength(System.Int64)">
+	<summary>
+ This method is not supported in this implementation and throws a NotImplementedException.
+ A derived class can override this method to implement a resize feature.
+ </summary>
+	<param name="value">New total size of Stream</param>
+</member><member name="P:LTR.IO.ImDisk.Devio.Client.DevioStream.RequiredAlignment">
+	<summary>
+ Alignment requirement for I/O at server.
+ </summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.Client.DevioStream.ProxyFlags">
+	<summary>
+ ImDisk proxy flags specified for proxy connection.
+ </summary>
+</member><member name="T:LTR.IO.ImDisk.Devio.Client.DevioStream">
+	<summary>
+ Base class for classes that implement Stream for client side of ImDisk/Devio protocol.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.Devio.Client.DevioTcpStream.Open(System.String,System.Boolean)">
+	<summary>
+ Creates a new instance by opening an tcp/ip connection to specified host and port
+ and starts communication with a Devio service using this connection.
+ </summary>
+	<param name="name">Host name and port where service is listening for incoming
+ connection. This can be on the form hostname:port or just hostname where default
+ port number 9000 will be used. The hostname part can be either an IP address or a
+ host name.</param>
+	<param name="read_only">Specifies if communication should be read-only.</param>
+	<returns>Returns new instance of DevioTcpStream.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Client.DevioTcpStream.#ctor(System.String,System.Boolean)">
+	<summary>
+ Creates a new instance by opening an tcp/ip connection to specified host and port
+ and starts communication with a Devio service using this connection.
+ </summary>
+	<param name="name">Host name and port where service is listening for incoming
+ connection. This can be on the form hostname:port or just hostname where default
+ port number 9000 will be used. The hostname part can be either an IP address or a
+ host name.</param>
+	<param name="read_only">Specifies if communication should be read-only.</param>
+</member><member name="T:LTR.IO.ImDisk.Devio.Client.DevioTcpStream">
+	<summary>
+ Derives DevioStream and implements client side of Devio tcp/ip based communication
+ proxy.
+ </summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderFromStream.BaseStream">
+	<summary>
+ Stream object used by this instance.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderFromStream.OwnsBaseStream">
+	<summary>
+ Indicates whether base stream will be automacially closed when this
+ instance is disposed.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderFromStream.#ctor(System.IO.Stream,System.Boolean)">
+	<summary>
+ Creates an object implementing IDevioProvider interface with I/O redirected
+ to an object of a class derived from System.IO.Stream.
+ </summary>
+	<param name="Stream">Object of a class derived from System.IO.Stream.</param>
+	<param name="ownsStream">Indicates whether Stream object will be automacially closed when this
+ instance is disposed.</param>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderFromStream.CanWrite">
+	<summary>
+ Returns value of BaseStream.CanWrite.
+ </summary>
+	<value>Value of BaseStream.CanWrite.</value>
+	<returns>Value of BaseStream.CanWrite.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderFromStream.Length">
+	<summary>
+ Returns value of BaseStream.Length.
+ </summary>
+	<value>Value of BaseStream.Length.</value>
+	<returns>Value of BaseStream.Length.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderFromStream.SectorSize">
+	<summary>
+ Returns a fixed value of 512.
+ </summary>
+	<value>512</value>
+	<returns>512</returns>
+</member><member name="T:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderFromStream">
+	<summary>
+ Class that implements <see>IDevioProvider</see> interface with a System.IO.Stream
+ object as storage backend.
+ </summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderUnmanagedBase.CanWrite">
+	<summary>
+ Determines whether virtual disk is writable or read-only.
+ </summary>
+	<value>True if virtual disk can be written to through this instance, or False
+ if it is opened for reading only.</value>
+	<returns>True if virtual disk can be written to through this instance, or False
+ if it is opened for reading only.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderUnmanagedBase.Length">
+	<summary>
+ Size of virtual disk.
+ </summary>
+	<value>Size of virtual disk.</value>
+	<returns>Size of virtual disk.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderUnmanagedBase.SectorSize">
+	<summary>
+ Sector size of virtual disk.
+ </summary>
+	<value>Sector size of virtual disk.</value>
+	<returns>Sector size of virtual disk.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderUnmanagedBase.Read(System.IntPtr,System.Int32,System.Int32,System.Int64)">
+	<summary>
+ Reads bytes from virtual disk to a memory area specified by a pointer to unmanaged memory.
+ </summary>
+	<param name="buffer">Pointer to unmanaged memory where read bytes are stored.</param>
+	<param name="bufferoffset">Offset in unmanaged memory buffer where bytes are stored.</param>
+	<param name="count">Number of bytes to read from virtual disk device.</param>
+	<param name="fileoffset">Offset at virtual disk device where read starts.</param>
+	<returns>Returns number of bytes read from device that were stored at specified memory position.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderUnmanagedBase.Write(System.IntPtr,System.Int32,System.Int32,System.Int64)">
+	<summary>
+ Writes out bytes to virtual disk device from a memory area specified by a pointer to unmanaged memory.
+ </summary>
+	<param name="buffer">Pointer to unmanaged memory area containing bytes to write out to device.</param>
+	<param name="bufferoffset">Offset in unmanaged memory buffer where bytes to write are located.</param>
+	<param name="count">Number of bytes to write to virtual disk device.</param>
+	<param name="fileoffset">Offset at virtual disk device where write starts.</param>
+	<returns>Returns number of bytes written to device.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderUnmanagedBase.Dispose">
+	<summary>
+ Releases all resources used by this instance.
+ </summary>
+</member><member name="T:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderUnmanagedBase">
+	<summary>
+ Base class for implementing <see>IDevioProvider</see> interface with a storage backend where
+ bytes to read from and write to device are provided in an unmanaged memory area.
+ </summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider.Length">
+	<summary>
+ Size of virtual disk.
+ </summary>
+	<value>Size of virtual disk.</value>
+	<returns>Size of virtual disk.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider.SectorSize">
+	<summary>
+ Sector size of virtual disk.
+ </summary>
+	<value>Sector size of virtual disk.</value>
+	<returns>Sector size of virtual disk.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider.CanWrite">
+	<summary>
+ Determines whether virtual disk is writable or read-only.
+ </summary>
+	<value>True if virtual disk can be written to through this instance, or False
+ if it is opened for reading only.</value>
+	<returns>True if virtual disk can be written to through this instance, or False
+ if it is opened for reading only.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider.Read(System.IntPtr,System.Int32,System.Int32,System.Int64)">
+	<summary>
+ Reads bytes from virtual disk to a memory area specified by a pointer to unmanaged memory.
+ </summary>
+	<param name="buffer">Pointer to unmanaged memory where read bytes are stored.</param>
+	<param name="bufferoffset">Offset in unmanaged memory buffer where bytes are stored.</param>
+	<param name="count">Number of bytes to read from virtual disk device.</param>
+	<param name="fileoffset">Offset at virtual disk device where read starts.</param>
+	<returns>Returns number of bytes read from device that were stored at specified memory position.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider.Write(System.IntPtr,System.Int32,System.Int32,System.Int64)">
+	<summary>
+ Writes out bytes to virtual disk device from a memory area specified by a pointer to unmanaged memory.
+ </summary>
+	<param name="buffer">Pointer to unmanaged memory area containing bytes to write out to device.</param>
+	<param name="bufferoffset">Offset in unmanaged memory buffer where bytes to write are located.</param>
+	<param name="count">Number of bytes to write to virtual disk device.</param>
+	<param name="fileoffset">Offset at virtual disk device where write starts.</param>
+	<returns>Returns number of bytes written to device.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider.Read(System.Byte[],System.Int32,System.Int32,System.Int64)">
+	<summary>
+ Reads bytes from virtual disk to a byte array.
+ </summary>
+	<param name="buffer">Byte array with enough size where read bytes are stored.</param>
+	<param name="bufferoffset">Offset in array where bytes are stored.</param>
+	<param name="count">Number of bytes to read from virtual disk device.</param>
+	<param name="fileoffset">Offset at virtual disk device where read starts.</param>
+	<returns>Returns number of bytes read from device that were stored in byte array.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider.Write(System.Byte[],System.Int32,System.Int32,System.Int64)">
+	<summary>
+ Writes out bytes from byte array to virtual disk device.
+ </summary>
+	<param name="buffer">Byte array containing bytes to write out to device.</param>
+	<param name="bufferoffset">Offset in array where bytes to write start.</param>
+	<param name="count">Number of bytes to write to virtual disk device.</param>
+	<param name="fileoffset">Offset at virtual disk device where write starts.</param>
+	<returns>Returns number of bytes written to device.</returns>
+</member><member name="T:LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider">
+	<summary>
+		<para>Interface with functionality required for a class to represent an object that can
+ service ImDisk/Devio I/O requests at server side. Classes implementing this
+ interface provides functions for determining properties such as virtual disk size
+ and whether virtual disk is writable, as well as functions for reading from and
+ optionally writing to virtual disk.</para>
+		<para>To make implementation easier, two base classes implement this interface. That is
+ DevioProviderManagedBase and DevioProviderUnmanagedBase. The first one makes it
+ possible to implement this interface by just overriding a few functions for reading
+ data to and writing data from managed byte arrays. The latter one makes it possible
+ to implement this interface by just overriding a few functions for reading data to
+ and writing data from unmanaged memory provided a pointer to unmanaged block of
+ memory.</para>
+	</summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderManagedBase.CanWrite">
+	<summary>
+ Determines whether virtual disk is writable or read-only.
+ </summary>
+	<value>True if virtual disk can be written to through this instance, or False
+ if it is opened for reading only.</value>
+	<returns>True if virtual disk can be written to through this instance, or False
+ if it is opened for reading only.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderManagedBase.Length">
+	<summary>
+ Size of virtual disk.
+ </summary>
+	<value>Size of virtual disk.</value>
+	<returns>Size of virtual disk.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderManagedBase.SectorSize">
+	<summary>
+ Sector size of virtual disk.
+ </summary>
+	<value>Sector size of virtual disk.</value>
+	<returns>Sector size of virtual disk.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderManagedBase.Read(System.Byte[],System.Int32,System.Int32,System.Int64)">
+	<summary>
+ Reads bytes from virtual disk to a byte array.
+ </summary>
+	<param name="buffer">Byte array with enough size where read bytes are stored.</param>
+	<param name="bufferoffset">Offset in array where bytes are stored.</param>
+	<param name="count">Number of bytes to read from virtual disk device.</param>
+	<param name="fileoffset">Offset at virtual disk device where read starts.</param>
+	<returns>Returns number of bytes read from device that were stored in byte array.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderManagedBase.Write(System.Byte[],System.Int32,System.Int32,System.Int64)">
+	<summary>
+ Writes out bytes from byte array to virtual disk device.
+ </summary>
+	<param name="buffer">Byte array containing bytes to write out to device.</param>
+	<param name="bufferoffset">Offset in array where bytes to write start.</param>
+	<param name="count">Number of bytes to write to virtual disk device.</param>
+	<param name="fileoffset">Offset at virtual disk device where write starts.</param>
+	<returns>Returns number of bytes written to device.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderManagedBase.Dispose">
+	<summary>
+ Releases all resources used by this instance.
+ </summary>
+</member><member name="T:LTR.IO.ImDisk.Devio.Server.Providers.DevioProviderManagedBase">
+	<summary>
+ Base class for implementing <see>IDevioProvider</see> interface with a storage backend where
+ bytes to read from and write to device are provided in a managed byte array.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.Devio.IMDPROXY_CONSTANTS.IMDPROXY_HEADER_SIZE">
+	<summary>
+ Header size when communicating using a shared memory object.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.Devio.IMDPROXY_CONSTANTS.REQUIRED_ALIGNMENT">
+	<summary>
+ Default required alignment for I/O operations.
+ </summary>
+</member><member name="T:LTR.IO.ImDisk.Devio.IMDPROXY_CONSTANTS">
+	<summary>
+ Constants used in connection with ImDisk/Devio proxy communication.
+ </summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:LTR.IO.ImDisk.Devio.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="F:LTR.IO.ImDisk.Devio.Server.Services.DevioNoneService.Imagefile">
+	<summary>
+ Name and path of image file mounted by ImDisk Virtual Disk Driver.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioNoneService.#ctor(System.String)">
+	<summary>
+ Creates a DevioServiceBase compatible object, but without providing a proxy service.
+ Instead, it just passes a disk image file name for direct mounting internally in ImDisk
+ Virtual Disk Driver.
+ </summary>
+	<param name="Imagefile">Name and path of image file mounted by ImDisk Virtual Disk Driver.</param>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioNoneService.GetPartitionInformation">
+	<summary>
+ Reads partition table and parses partition entry values into a collection of PARTITION_INFORMATION
+ structure objects.
+ </summary>
+	<returns>Collection of PARTITION_INFORMATION structures objects.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioNoneService.StartServiceThread">
+	<summary>
+ Dummy implementation that always returns True.
+ </summary>
+	<returns>Fixed value of True.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioNoneService.RunService">
+	<summary>
+ Dummy implementation that just raises ServiceReady event.
+ </summary>
+</member><member name="T:LTR.IO.ImDisk.Devio.Server.Services.DevioNoneService">
+	<summary>
+ Class deriving from DevioServiceBase, but without providing a proxy service. Instead,
+ it just passes a disk image file name for direct mounting internally in ImDisk Virtual
+ Disk Driver.
+ </summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.DevioProvider">
+	<summary>
+ IDevioProvider object used by this instance.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.OwnsProvider">
+	<summary>
+ Indicates whether DevioProvider will be automatically closed when this instance
+ is disposed.
+ </summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.DiskSize">
+	<summary>
+ Size of virtual disk device.
+ </summary>
+	<value>Size of virtual disk device.</value>
+	<returns>Size of virtual disk device.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.Offset">
+	<summary>
+ Offset in disk image where this virtual disk device begins.
+ </summary>
+	<value>Offset in disk image where this virtual disk device begins.</value>
+	<returns>Offset in disk image where this virtual disk device begins.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.SectorSize">
+	<summary>
+ Sector size of virtual disk device.
+ </summary>
+	<value>Sector size of virtual disk device.</value>
+	<returns>Sector size of virtual disk device.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.Description">
+	<summary>
+ Description of service.
+ </summary>
+	<value>Description of service.</value>
+	<returns>Description of service.</returns>
+</member><member name="E:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.ServiceReady">
+	<summary>
+ Event raised when service thread is ready to start accepting connection from a client.
+ </summary>
+</member><member name="E:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.ServiceInitFailed">
+	<summary>
+ Event raised when service initialization fails.
+ </summary>
+</member><member name="E:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.ImDiskCreated">
+	<summary>
+ Event raised when an ImDisk Virtual Disk Device is created by with this instance.
+ </summary>
+</member><member name="E:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.ServiceShutdown">
+	<summary>
+ Event raised when service thread exits.
+ </summary>
+</member><member name="E:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.ServiceUnhandledException">
+	<summary>
+ Event raised when an unhandled exception occurs in service thread and thread is about to terminate,
+ but before associated virtual disk device is forcefully removed, as specified by ForceRemoveImDiskDeviceOnCrash
+ property.
+ </summary>
+</member><member name="E:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.StopServiceThread">
+	<summary>
+ Event raised to stop service thread. Service thread handle this event by preparing commnunication for
+ disconnection.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.#ctor(LTR.IO.ImDisk.Devio.Server.Providers.IDevioProvider,System.Boolean)">
+	<summary>
+ Creates a new service instance with enough data to later run a service that acts as server end in ImDisk/Devio
+ communication.
+ </summary>
+	<param name="DevioProvider">IDevioProvider object to that serves as storage backend for this service.</param>
+	<param name="OwnsProvider">Indicates whether DevioProvider object will be automatically closed when this
+ instance is disposed.</param>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.GetDeviceReader">
+	<summary>
+ Creates a device reader delegate used to directly read from device through this instance.
+ </summary>
+	<returns>A delegate that can be used to directly read from device through this instance.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.GetPartitionInformation">
+	<summary>
+ Reads partition table and parses partition entry values into a collection of PARTITION_INFORMATION
+ structure objects.
+ </summary>
+	<returns>Collection of PARTITION_INFORMATION structures objects.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.RunService">
+	<summary>
+ When overridden in a derived class, runs service that acts as server end in ImDisk/Devio communication. It will
+ first wait for a client to connect, then serve client I/O requests and when client finally requests service to
+ terminate, this method returns to caller. To run service in a worker thread that automatically disposes this
+ object after client disconnection, call StartServiceThread() instead.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.StartServiceThread">
+	<summary>
+ Creates a worker thread where RunService() method is called. After that method exits, this instance is automatically
+ disposed.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.WaitForServiceThreadExit(System.TimeSpan)">
+	<summary>
+ Waits for service thread created by StartServiceThread() to exit. If no service thread
+ has been created or if it has already exit, this method returns immediately with a
+ value of True.
+ </summary>
+	<param name="timeout">Timeout value, or Timeout.Infinite to wait infinitely.</param>
+	<returns>Returns True if service thread has exit or no service thread has been
+ created, or False if timeout occured.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.WaitForServiceThreadExit">
+	<summary>
+ Waits for service thread created by StartServiceThread() to exit. If no service thread
+ has been created or if it has already exit, this method returns immediately.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.StartServiceThreadAndMountImDisk(LTR.IO.ImDisk.ImDiskFlags,System.String)">
+	<summary>
+ Combines a call to StartServiceThread() with a call to ImDiskAPI to create a proxy type
+ ImDisk Virtual Disk Device that uses the started service as storage backend.
+ </summary>
+	<param name="Flags">Flags to pass to ImDiskAPI.CreateDevice() combined with fixed flag
+ values specific to this instance. Example of such fixed flag values are flags specifying
+ proxy operation and which proxy communication protocol to use, which therefore do not
+ need to be specified in this parameter. A common value to pass however, is ImDiskFlags.ReadOnly
+ to create a read-only virtual disk device.</param>
+	<param name="MountPoint">Optionally drive letter followed by a colon to associate a drive
+ letter to created virtual disk device. If this parameter is null/Nothing, the device is
+ created without a drive letter.</param>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.DismountImDiskAndStopServiceThread">
+	<summary>
+ Dismounts an ImDisk Virtual Disk Device created by StartServiceThreadAndMountImDisk() and waits
+ for service thread of this instance to exit.
+ </summary>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.ImDiskAdditionalFlags">
+	<summary>
+ Additional flags that will be passed to ImDiskAPI.CreateDevice() in StartServiceThreadAndMountImDisk()
+ method. Default value of this property depends on derived class and which parameters are normally
+ needed for ImDisk to start communication with this service.
+ </summary>
+	<value>Default value of this property depends on derived class and which parameters are normally
+ needed for ImDisk to start communication with this service.</value>
+	<returns>Default value of this property depends on derived class and which parameters are normally
+ needed for ImDisk to start communication with this service.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.ImDiskProxyModeFlags">
+	<summary>
+ When overridden in a derived class, indicates additional flags that will be passed to
+ ImDiskAPI.CreateDevice() in StartServiceThreadAndMountImDisk() method. Value of this property depends
+ on derived class and which parameters are normally needed for ImDisk to start communication with this
+ service.
+ </summary>
+	<value>Default value of this property depends on derived class and which parameters are normally
+ needed for ImDisk to start communication with this service.</value>
+	<returns>Default value of this property depends on derived class and which parameters are normally
+ needed for ImDisk to start communication with this service.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.ImDiskProxyObjectName">
+	<summary>
+ Object name that ImDisk Virtual Disk Driver can use to connect to this service.
+ </summary>
+	<value>Object name string.</value>
+	<returns>Object name that ImDisk Virtual Disk Driver can use to connect to this service.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.ImDiskDeviceNumber">
+	<summary>
+ After successful call to StartServiceThreadAndMountImDisk(), this property returns ImDisk device
+ number for created ImDisk Virtual Disk Device. This number can be used when calling ImDisk API
+ functions. If no ImDisk Virtual Disk Device has been created by this instance, an exception is
+ thrown. Use HasImDiskDevice property to find out if an ImDisk device has been created.
+ </summary>
+	<value>ImDisk device
+ number for created ImDisk Virtual Disk Device.</value>
+	<returns>ImDisk device
+ number for created ImDisk Virtual Disk Device.</returns>
+	<remarks></remarks>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.HasImDiskDevice">
+	<summary>
+ Use HasImDiskDevice property to find out if an ImDisk device has been created in a call to
+ StartServiceThreadAndMountImDisk() method. Use ImDiskDeviceNumber property to find out ImDisk
+ device number for created device.
+ </summary>
+	<value>Returns True if an ImDisk Virtual Disk Device has been created, False otherwise.</value>
+	<returns>Returns True if an ImDisk Virtual Disk Device has been created, False otherwise.</returns>
+</member><member name="P:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.ForceRemoveImDiskDeviceOnCrash">
+	<summary>
+ Indicates whether ImDisk Virtual Disk Device created by this instance will be automatically
+ forcefully removed if a crash occurs in service thread of this instance. Default is True.
+ </summary>
+	<value>Indicates whether ImDisk Virtual Disk Device created by this instance will be automatically
+ forcefully removed if a crash occurs in service thread of this instance. Default is True.</value>
+	<returns>Indicates whether ImDisk Virtual Disk Device created by this instance will be automatically
+ forcefully removed if a crash occurs in service thread of this instance. Default is True.</returns>
+</member><member name="M:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase.Dispose">
+	<summary>
+ Releases all resources used by this instance.
+ </summary>
+</member><member name="T:LTR.IO.ImDisk.Devio.Server.Services.DevioServiceBase">
+	<summary>
+ Base class for classes that implement functionality for acting as server end of
+ ImDisk/Devio communication. Derived classes implement communication mechanisms and
+ use an object implementing <see>IDevioProvider</see> interface as storage backend
+ for I/O requests received from client.
+ </summary>
+</member>
+</members>
+</doc>

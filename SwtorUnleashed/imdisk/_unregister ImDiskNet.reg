@@ -1,0 +1,108 @@
+REGEDIT4
+
+[HKEY_CLASSES_ROOT\LTR.IO.ImDisk.ComInterop.ImDiskCOM]
+@="LTR.IO.ImDisk.ComInterop.ImDiskCOM"
+
+[HKEY_CLASSES_ROOT\LTR.IO.ImDisk.ComInterop.ImDiskCOM\CLSID]
+@="{B0BF4B36-0EBE-4EF4-8974-07694A7A3A81}"
+
+[HKEY_CLASSES_ROOT\CLSID\{B0BF4B36-0EBE-4EF4-8974-07694A7A3A81}]
+@="LTR.IO.ImDisk.ComInterop.ImDiskCOM"
+
+[HKEY_CLASSES_ROOT\CLSID\{B0BF4B36-0EBE-4EF4-8974-07694A7A3A81}\InprocServer32]
+@="mscoree.dll"
+"ThreadingModel"="Both"
+"Class"="LTR.IO.ImDisk.ComInterop.ImDiskCOM"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"
+
+[HKEY_CLASSES_ROOT\CLSID\{B0BF4B36-0EBE-4EF4-8974-07694A7A3A81}\InprocServer32\1.0.0.0]
+"Class"="LTR.IO.ImDisk.ComInterop.ImDiskCOM"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"
+
+[HKEY_CLASSES_ROOT\CLSID\{B0BF4B36-0EBE-4EF4-8974-07694A7A3A81}\ProgId]
+@="LTR.IO.ImDisk.ComInterop.ImDiskCOM"
+
+[HKEY_CLASSES_ROOT\CLSID\{B0BF4B36-0EBE-4EF4-8974-07694A7A3A81}\Implemented Categories\{62C8FE65-4EBB-45E7-B440-6E39B2CDBF29}]
+
+[HKEY_CLASSES_ROOT\Record\{209D67EA-9AFD-436A-A0F1-51C802FE6720}\1.0.0.0]
+"Class"="LTR.IO.ImDisk.ComInterop.LARGE_INTEGER"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"
+
+[HKEY_CLASSES_ROOT\Record\{C251A44E-BF4C-38A7-905A-2A9DB5D86588}\1.0.0.0]
+"Class"="LTR.IO.ImDisk.DLL+ImDiskAPIFlags"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"
+
+[HKEY_CLASSES_ROOT\Record\{93C7FF9C-DC0A-35C9-B2A4-949B1ED59EE3}\1.0.0.0]
+"Class"="LTR.IO.ImDisk.ImDiskFlags"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"
+
+[HKEY_CLASSES_ROOT\LTR.IO.NativeFileIO+Win32API]
+@="LTR.IO.NativeFileIO+Win32API"
+
+[HKEY_CLASSES_ROOT\LTR.IO.NativeFileIO+Win32API\CLSID]
+@="{135A3A88-6B17-31CB-8CA1-B71D4A57AF03}"
+
+[HKEY_CLASSES_ROOT\CLSID\{135A3A88-6B17-31CB-8CA1-B71D4A57AF03}]
+@="LTR.IO.NativeFileIO+Win32API"
+
+[HKEY_CLASSES_ROOT\CLSID\{135A3A88-6B17-31CB-8CA1-B71D4A57AF03}\InprocServer32]
+@="mscoree.dll"
+"ThreadingModel"="Both"
+"Class"="LTR.IO.NativeFileIO+Win32API"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"
+
+[HKEY_CLASSES_ROOT\CLSID\{135A3A88-6B17-31CB-8CA1-B71D4A57AF03}\InprocServer32\1.0.0.0]
+"Class"="LTR.IO.NativeFileIO+Win32API"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"
+
+[HKEY_CLASSES_ROOT\CLSID\{135A3A88-6B17-31CB-8CA1-B71D4A57AF03}\ProgId]
+@="LTR.IO.NativeFileIO+Win32API"
+
+[HKEY_CLASSES_ROOT\CLSID\{135A3A88-6B17-31CB-8CA1-B71D4A57AF03}\Implemented Categories\{62C8FE65-4EBB-45E7-B440-6E39B2CDBF29}]
+
+[HKEY_CLASSES_ROOT\Record\{22FADCAC-C4A3-3390-81D4-09E5EC402C36}\1.0.0.0]
+"Class"="LTR.IO.NativeFileIO+Win32API+DISK_GEOMETRY"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"
+
+[HKEY_CLASSES_ROOT\Record\{BC1D1646-2AAC-3EC6-BBB0-454879873F27}\1.0.0.0]
+"Class"="LTR.IO.NativeFileIO+Win32API+PARTITION_INFORMATION"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"
+
+[HKEY_CLASSES_ROOT\Record\{EBFBA198-A148-3CBF-A625-27C78FC65AC9}\1.0.0.0]
+"Class"="LTR.IO.NativeFileIO+Win32API+DISK_GROW_PARTITION"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"
+
+[HKEY_CLASSES_ROOT\Record\{FB4D4E33-E0CE-389F-B7FC-AA8874AFEBF3}\1.0.0.0]
+"Class"="LTR.IO.NativeFileIO+Win32API+COMMTIMEOUTS"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"
+
+[HKEY_CLASSES_ROOT\Record\{3A066A77-1054-3DD2-9BAF-17C89A762891}\1.0.0.0]
+"Class"="LTR.IO.NativeFileIO+Win32API+SERVICE_STATUS"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"
+
+[HKEY_CLASSES_ROOT\Record\{44D58790-E8E1-30F0-BD76-E36022A71158}\1.0.0.0]
+"Class"="LTR.IO.NativeFileIO+Win32API+DEFINE_DOS_DEVICE_FLAGS"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"
+
+[HKEY_CLASSES_ROOT\Record\{3B525122-0EB1-37C8-BA53-048E45429300}\1.0.0.0]
+"Class"="LTR.IO.NativeFileIO+Win32API+DISK_GEOMETRY+MEDIA_TYPE"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"
+
+[HKEY_CLASSES_ROOT\Record\{BEA31F58-6C65-30A0-AA58-C4CBEA591DED}\1.0.0.0]
+"Class"="LTR.IO.NativeFileIO+Win32API+PARTITION_INFORMATION+PARTITION_TYPE"
+"Assembly"="ImDiskNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69215e034751fde4"
+"RuntimeVersion"="v2.0.50727"

@@ -1,0 +1,941 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+ImDiskNet
+</name>
+</assembly>
+<members>
+<member name="P:LTR.IO.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:LTR.IO.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:LTR.IO.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.Auto">
+	<summary>
+ Automatically selected device properties.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.ReadOnly">
+	<summary>
+ Creates a read-only virtual disk.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.Removable">
+	<summary>
+ Creates a virtual disk with "removable" properties reported to the operating system.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.SparseFile">
+	<summary>
+ Specifies that image files are created with sparse attribute.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.DeviceTypeHD">
+	<summary>
+ Creates a virtual disk with device type hard disk volume.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.DeviceTypeFD">
+	<summary>
+ Creates a virtual disk with device type floppy disk.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.DeviceTypeCD">
+	<summary>
+ Creates a virtual disk with device type CD-ROM/DVD-ROM etc.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.TypeFile">
+	<summary>
+ Creates a virtual disk backed by a image file on disk. The Filename parameter specifies image file to use.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.TypeVM">
+	<summary>
+ Creates a virtual disk backed by virtual memory. If Filename parameter is also specified, contents of that file
+ will be loaded to the virtual memory before driver starts to service I/O requests for it.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.TypeProxy">
+	<summary>
+ Creates a virtual disk for which storage is provided by an I/O proxy application.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.ProxyTypeDirect">
+	<summary>
+ Specifies that proxy application will be contacted directly through a named pipe. The Filename parameter specifies
+ path to named pipe.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.ProxyTypeComm">
+	<summary>
+ Specifies that proxy application will be contacted through a serial communications port. The Filename parameter
+ specifies port optionally followed by colon, space and a port configuration string using same format as MODE COM
+ command. Example: "COM1: BAUD=9600 PARITY=N STOP=1 DATA=8"
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.ProxyTypeTCP">
+	<summary>
+ Specifies that proxy application will be contacted through a TCP/IP port. The Filename parameter specifies host
+ name or IP address optionally followed by colon and port number. If port number is omitted a default value of 9000
+ is used.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.ProxyTypeSharedMemory">
+	<summary>
+ Specifies that proxy application will be contacted through shared memory. The Filename parameter specifies object
+ name of shared memory block and synchronization event objects.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.ImDiskFlags.Modified">
+	<summary>
+ This flag can only be set by the driver and may be included in the response Flags field from QueryDevice method.
+ It indicates that virtual disk contents have changed since created or since flag was last cleared. This flag can be
+ cleared by specifying it in FlagsToChange parameter and not in Flags parameter in a call to ChangeFlags method.
+ </summary>
+</member><member name="T:LTR.IO.ImDisk.ImDiskFlags">
+	<summary>
+ Values for ImDisk flags fields used when creating, querying or modifying virtual disks.
+ </summary>
+</member><member name="P:LTR.IO.ImDisk.ImDiskAPI.APIFlags">
+	<summary>
+ ImDisk API behaviour flags.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.GetOffsetByFileExt(System.String)">
+	<summary>
+ Checks if filename contains a known extension for which ImDisk knows of a constant offset value. That value can be
+ later passed as Offset parameter to CreateDevice method.
+ </summary>
+	<param name="ImageFile">Name of disk image file.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.GetPartitionInformation(System.String,System.UInt32,System.Int64)">
+	<summary>
+ Parses partition table entries from a master boot record and extended partition table record, if any.
+ </summary>
+	<param name="ImageFile">Name of image file to examine.</param>
+	<param name="SectorSize">Sector size for translating sector values to absolute byte positions. This
+ parameter is in most cases 512.</param>
+	<param name="Offset">Offset in image file where master boot record is located.</param>
+	<returns>An array of eight PARTITION_INFORMATION structures</returns>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.GetPartitionInformation(System.IO.Stream,System.UInt32,System.Int64)">
+	<summary>
+ Parses partition table entries from a master boot record and extended partition table record, if any.
+ </summary>
+	<param name="ImageFile">Disk image to examine.</param>
+	<param name="SectorSize">Sector size for translating sector values to absolute byte positions. This
+ parameter is in most cases 512.</param>
+	<param name="Offset">Offset in image file where master boot record is located.</param>
+	<returns>An array of eight PARTITION_INFORMATION structures</returns>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.GetPartitionInformation(System.IntPtr,LTR.IO.ImDisk.DLL.ImDiskReadFileManagedProc,System.UInt32,System.Int64)">
+	<summary>
+ Parses partition table entries from a master boot record and extended partition table record, if any.
+ </summary>
+	<param name="Handle">Value to pass as first parameter to ReadFileProc.</param>
+	<param name="ReadFileProc">Reference to method that reads disk image.</param>
+	<param name="SectorSize">Sector size for translating sector values to absolute byte positions. This
+ parameter is in most cases 512.</param>
+	<param name="Offset">Offset in image file where master boot record is located.</param>
+	<returns>An array of eight PARTITION_INFORMATION structures</returns>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.GetPartitionInformation(System.IntPtr,LTR.IO.ImDisk.DLL.ImDiskReadFileManagedProc,System.UInt32)">
+	<summary>
+ Parses partition table entries from a master boot record and extended partition table record, if any.
+ </summary>
+	<param name="Handle">Value to pass as first parameter to ReadFileProc.</param>
+	<param name="ReadFileProc">Reference to method that reads disk image.</param>
+	<param name="SectorSize">Sector size for translating sector values to absolute byte positions. This
+ parameter is in most cases 512.</param>
+	<returns>An array of eight PARTITION_INFORMATION structures</returns>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.GetPartitionInformation(System.IntPtr,LTR.IO.ImDisk.DLL.ImDiskReadFileUnmanagedProc,System.UInt32,System.Int64)">
+	<summary>
+ Parses partition table entries from a master boot record and extended partition table record, if any.
+ </summary>
+	<param name="Handle">Value to pass as first parameter to ReadFileProc.</param>
+	<param name="ReadFileProc">Reference to method that reads disk image.</param>
+	<param name="SectorSize">Sector size for translating sector values to absolute byte positions. This
+ parameter is in most cases 512.</param>
+	<param name="Offset">Offset in image file where master boot record is located.</param>
+	<returns>An array of eight PARTITION_INFORMATION structures</returns>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.GetPartitionInformation(System.IntPtr,LTR.IO.ImDisk.DLL.ImDiskReadFileUnmanagedProc,System.UInt32)">
+	<summary>
+ Parses partition table entries from a master boot record and extended partition table record, if any.
+ </summary>
+	<param name="Handle">Value to pass as first parameter to ReadFileProc.</param>
+	<param name="ReadFileProc">Reference to method that reads disk image.</param>
+	<param name="SectorSize">Sector size for translating sector values to absolute byte positions. This
+ parameter is in most cases 512.</param>
+	<returns>An array of eight PARTITION_INFORMATION structures</returns>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.GetPartitionInformation(System.String,System.UInt32)">
+	<summary>
+ Parses partition table entries from a master boot record and extended partition table record, if any.
+ </summary>
+	<param name="ImageFile">Name of image file to examine</param>
+	<param name="SectorSize">Sector size for translating sector values to absolute byte positions. This
+ parameter is in most cases 512.</param>
+	<returns>An array of eight PARTITION_INFORMATION structures</returns>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.FilterDefinedPartitions(System.Collections.Generic.IEnumerable{LTR.IO.NativeFileIO.Win32API.PARTITION_INFORMATION})">
+	<summary>
+ Creates a new collection of partition table entries that only contains those entries
+ from source sequence with valid partition definitions.
+ </summary>
+	<param name="PartitionList">Sequence of partition table entries</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.ImageContainsISOFS(System.String,System.Int64)">
+	<summary>
+ Checks whether an image file contains an ISO9660 filesystem.
+ </summary>
+	<param name="Imagefile">Path to a volume image file or a device path to a disk volume,
+ such as \\.\A: or \\.\C:.</param>
+	<param name="Offset">Optional offset in bytes to where raw disk data begins, for use
+ with "non-raw" image files with headers before the actual disk image data.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.ImageContainsISOFS(System.IO.Stream,System.Int64)">
+	<summary>
+ Checks whether an image file contains an ISO9660 filesystem.
+ </summary>
+	<param name="Imagefile">Open stream that can be used to read the image file.</param>
+	<param name="Offset">Optional offset in bytes to where raw disk data begins, for use
+ with "non-raw" image files with headers before the actual disk image data.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.GetFormattedGeometry(System.String,System.Int64)">
+	<summary>
+    Reads formatted geometry for a volume by parsing BPB, BIOS Parameter Block,
+    from volume boot record into a DISK_GEOMETRY structure.
+
+    If no boot record signature is found, an exception is thrown.
+ </summary>
+	<param name="Imagefile">Path to a volume image file or a device path to a disk volume,
+ such as \\.\A: or \\.\C:.</param>
+	<param name="Offset">Optional offset in bytes to volume boot record within file for
+ use with "non-raw" volume image files. This parameter can be used to for example
+ skip over headers for specific disk image formats, or to skip over master boot
+ record in a disk image file that contains a complete raw disk image and not only a
+ single volume.</param>
+	<returns>A DISK_GEOMETRY structure that receives information about formatted geometry.
+ This function zeroes the Cylinders member.</returns>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.GetFormattedGeometry(System.IO.Stream,System.Int64)">
+	<summary>
+    Reads formatted geometry for a volume by parsing BPB, BIOS Parameter Block,
+    from volume boot record into a DISK_GEOMETRY structure.
+
+    If no boot record signature is found, an exception is thrown.
+ </summary>
+	<param name="Imagefile">Open stream that can be used to read from volume image.</param>
+	<param name="Offset">Optional offset in bytes to volume boot record within file for
+ use with "non-raw" volume image files. This parameter can be used to for example
+ skip over headers for specific disk image formats, or to skip over master boot
+ record in a disk image file that contains a complete raw disk image and not only a
+ single volume.</param>
+	<returns>A DISK_GEOMETRY structure that receives information about formatted geometry.
+ This function zeroes the Cylinders member.</returns>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.AutoFindOffsetAndSize(System.String,System.UInt32,System.Int64@,System.Int64@)">
+	<summary>
+ Combines GetOffsetByFileExt() and GetPartitionInformation() so that both format-specific offset and 
+ offset to first partition is combined into resulting Offset. If a partition was found, size of it is
+ also returned in the Size parameter.
+ </summary>
+	<param name="Imagefile">Name of image file to examine</param>
+	<param name="SectorSize">Sector size for translating sector values to absolute byte positions. This
+ parameter is in most cases 512.</param>
+	<param name="Offset">Absolute offset in image file where volume data begins</param>
+	<param name="Size">Size of partition if a partition table was found, otherwise zero</param>
+	<remarks></remarks>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.LoadDriver">
+	<summary>
+ Loads ImDisk Virtual Disk Driver into Windows kernel. This driver is needed to create ImDisk virtual disks. For
+ this method to be called successfully, driver needs to be installed and caller needs permission to load kernel mode
+ drivers.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.LoadHelperService">
+	<summary>
+ Starts ImDisk Virtual Disk Driver Helper Service. This service is needed to create proxy type ImDisk virtual disks
+ where the I/O proxy application is called through TCP/IP or a serial communications port. For
+ this method to be called successfully, service needs to be installed and caller needs permission to start services.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.CreateMountPoint(System.String,System.String)">
+	<summary>
+ An easy way to turn an empty NTFS directory to a reparsepoint that redirects
+ requests to a mounted device. Acts quite like mount points or symbolic links
+ in *nix. If MountPoint specifies a character followed by a colon, a drive
+ letter is instead created to point to Target.
+ </summary>
+	<param name="Directory">Path to empty directory on an NTFS volume, or a drive letter
+ followed by a colon.</param>
+	<param name="Target">Target path in native format, for example \Device\ImDisk0</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.CreateMountPoint(System.String,System.UInt32)">
+	<summary>
+ An easy way to turn an empty NTFS directory to a reparsepoint that redirects
+ requests to an ImDisk device. Acts quite like mount points or symbolic links
+ in *nix. If MountPoint specifies a character followed by a colon, a drive
+ letter is instead created to point to Target.
+ </summary>
+	<param name="Directory">Path to empty directory on an NTFS volume, or a drive letter
+ followed by a colon.</param>
+	<param name="DeviceNumber">Device number of an existing ImDisk virtual disk</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.RemoveMountPoint(System.String)">
+	<summary>
+ Restores a reparsepoint to be an ordinary empty directory, or removes a drive
+ letter mount point.
+ </summary>
+	<param name="MountPoint">Path to a reparse point on an NTFS volume, or a drive
+ letter followed by a colon to remove a drive letter mount point.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.FindFreeDriveLetter">
+	<summary>
+ Returns first free drive letter available.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.GetDeviceList">
+	<summary>
+ Retrieves a list of virtual disks on this system. Each element in returned list holds a device number of a loaded
+ ImDisk virtual disk.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.ExtendDevice(System.UInt32,System.Int64,System.IntPtr)">
+	<summary>
+ Extends size of an existing ImDisk virtual disk.
+ </summary>
+	<param name="DeviceNumber">Device number of ImDisk virtual disk to extend.</param>
+	<param name="ExtendSize">Size to add.</param>
+	<param name="StatusControl">Optional handle to control that can display status messages during operation.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.ExtendDevice(System.UInt32,System.Int64)">
+	<summary>
+ Extends size of an existing ImDisk virtual disk.
+ </summary>
+	<param name="DeviceNumber">Device number of ImDisk virtual disk to extend.</param>
+	<param name="ExtendSize">Size to add.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.CreateDevice(System.Int64,System.UInt32,System.UInt32,System.UInt32,System.Int64,LTR.IO.ImDisk.ImDiskFlags,System.String,System.Boolean,System.String,System.IntPtr)">
+	<summary>
+ Creates a new ImDisk virtual disk.
+ </summary>
+	<param name="DiskSize">Size of virtual disk. If this parameter is zero, current size of disk image file will
+ automatically be used as virtual disk size.</param>
+	<param name="TracksPerCylinder">Number of tracks per cylinder for virtual disk geometry. This parameter can be zero
+  in which case most reasonable value will be automatically used by the driver.</param>
+	<param name="SectorsPerTrack">Number of sectors per track for virtual disk geometry. This parameter can be zero
+  in which case most reasonable value will be automatically used by the driver.</param>
+	<param name="BytesPerSector">Number of bytes per sector for virtual disk geometry. This parameter can be zero
+  in which case most reasonable value will be automatically used by the driver.</param>
+	<param name="ImageOffset">A skip offset if virtual disk data does not begin immediately at start of disk image file.
+ Frequently used with image formats like Nero NRG which start with a file header not used by ImDisk or Windows
+ filesystem drivers.</param>
+	<param name="Flags">Flags specifying properties for virtual disk. See comments for each flag value.</param>
+	<param name="Filename">Name of disk image file to use or create. If disk image file already exists the DiskSize
+ parameter can be zero in which case current disk image file size will be used as virtual disk size. If Filename
+ paramter is Nothing/null disk will be created in virtual memory and not backed by a physical disk image file.</param>
+	<param name="NativePath">Specifies whether Filename parameter specifies a path in Windows native path format, the
+ path format used by drivers in Windows NT kernels, for example \Device\Harddisk0\Partition1\imagefile.img. If this
+ parameter is False path in FIlename parameter will be interpreted as an ordinary user application path.</param>
+	<param name="MountPoint">Mount point in the form of a drive letter and colon to create for newly created virtual
+ disk. If this parameter is Nothing/null the virtual disk will be created without a drive letter.</param>
+	<param name="StatusControl">Optional handle to control that can display status messages during operation.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.CreateDevice(System.Int64,LTR.IO.ImDisk.ImDiskFlags,System.String,System.Boolean,System.String,System.UInt32@)">
+	<summary>
+ Creates a new ImDisk virtual disk.
+ </summary>
+	<param name="ImageOffset">A skip offset if virtual disk data does not begin immediately at start of disk image file.
+ Frequently used with image formats like Nero NRG which start with a file header not used by ImDisk or Windows
+ filesystem drivers.</param>
+	<param name="Flags">Flags specifying properties for virtual disk. See comments for each flag value.</param>
+	<param name="Filename">Name of disk image file to use or create. If disk image file already exists the DiskSize
+ parameter can be zero in which case current disk image file size will be used as virtual disk size. If Filename
+ paramter is Nothing/null disk will be created in virtual memory and not backed by a physical disk image file.</param>
+	<param name="NativePath">Specifies whether Filename parameter specifies a path in Windows native path format, the
+ path format used by drivers in Windows NT kernels, for example \Device\Harddisk0\Partition1\imagefile.img. If this
+ parameter is False path in FIlename parameter will be interpreted as an ordinary user application path.</param>
+	<param name="MountPoint">Mount point in the form of a drive letter and colon to create for newly created virtual
+ disk. If this parameter is Nothing/null the virtual disk will be created without a drive letter.</param>
+	<param name="DeviceNumber">In: Device number for device to create. Device number must not be in use by an existing
+ virtual disk. For automatic allocation of device number, pass UInt32.MaxValue.
+
+ Out: Device number for created device.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.CreateDevice(System.Int64,System.String,System.UInt32@)">
+	<summary>
+ Creates a new memory backed ImDisk virtual disk with the specified size in bytes.
+ </summary>
+	<param name="DiskSize">Size of virtual disk.</param>
+	<param name="MountPoint">Mount point in the form of a drive letter and colon to create for newly created virtual
+ disk. If this parameter is Nothing/null the virtual disk will be created without a drive letter.</param>
+	<param name="DeviceNumber">In: Device number for device to create. Device number must not be in use by an existing
+ virtual disk. For automatic allocation of device number, pass UInt32.MaxValue.
+
+ Out: Device number for created device.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.CreateDevice(System.Int64,System.UInt32,System.UInt32,System.UInt32,System.Int64,LTR.IO.ImDisk.ImDiskFlags,System.String,System.Boolean,System.String,System.UInt32@,System.IntPtr)">
+	<summary>
+ Creates a new ImDisk virtual disk.
+ </summary>
+	<param name="DiskSize">Size of virtual disk. If this parameter is zero, current size of disk image file will
+ automatically be used as virtual disk size.</param>
+	<param name="TracksPerCylinder">Number of tracks per cylinder for virtual disk geometry. This parameter can be zero
+  in which case most reasonable value will be automatically used by the driver.</param>
+	<param name="SectorsPerTrack">Number of sectors per track for virtual disk geometry. This parameter can be zero
+  in which case most reasonable value will be automatically used by the driver.</param>
+	<param name="BytesPerSector">Number of bytes per sector for virtual disk geometry. This parameter can be zero
+  in which case most reasonable value will be automatically used by the driver.</param>
+	<param name="ImageOffset">A skip offset if virtual disk data does not begin immediately at start of disk image file.
+ Frequently used with image formats like Nero NRG which start with a file header not used by ImDisk or Windows
+ filesystem drivers.</param>
+	<param name="Flags">Flags specifying properties for virtual disk. See comments for each flag value.</param>
+	<param name="Filename">Name of disk image file to use or create. If disk image file already exists the DiskSize
+ parameter can be zero in which case current disk image file size will be used as virtual disk size. If Filename
+ paramter is Nothing/null disk will be created in virtual memory and not backed by a physical disk image file.</param>
+	<param name="NativePath">Specifies whether Filename parameter specifies a path in Windows native path format, the
+ path format used by drivers in Windows NT kernels, for example \Device\Harddisk0\Partition1\imagefile.img. If this
+ parameter is False path in FIlename parameter will be interpreted as an ordinary user application path.</param>
+	<param name="MountPoint">Mount point in the form of a drive letter and colon to create for newly created virtual
+ disk. If this parameter is Nothing/null the virtual disk will be created without a drive letter.</param>
+	<param name="DeviceNumber">In: Device number for device to create. Device number must not be in use by an existing
+ virtual disk. For automatic allocation of device number, pass UInt32.MaxValue.
+
+ Out: Device number for created device.</param>
+	<param name="StatusControl">Optional handle to control that can display status messages during operation.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.RemoveDevice(System.UInt32)">
+	<summary>
+ Removes an existing ImDisk virtual disk from system.
+ </summary>
+	<param name="DeviceNumber">Device number to remove.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.RemoveDevice(System.UInt32,System.IntPtr)">
+	<summary>
+ Removes an existing ImDisk virtual disk from system.
+ </summary>
+	<param name="DeviceNumber">Device number to remove.</param>
+	<param name="StatusControl">Optional handle to control that can display status messages during operation.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.RemoveDevice(System.String)">
+	<summary>
+ Removes an existing ImDisk virtual disk from system.
+ </summary>
+	<param name="MountPoint">Mount point of virtual disk to remove.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.RemoveDevice(System.String,System.IntPtr)">
+	<summary>
+ Removes an existing ImDisk virtual disk from system.
+ </summary>
+	<param name="MountPoint">Mount point of virtual disk to remove.</param>
+	<param name="StatusControl">Optional handle to control that can display status messages during operation.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.ForceRemoveDevice(System.UInt32)">
+	<summary>
+ Forcefully removes an existing ImDisk virtual disk from system even if it is use by other applications.
+ </summary>
+	<param name="DeviceNumber">Device number to remove.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.QueryDevice(System.UInt32,System.Int64@,System.UInt32@,System.UInt32@,System.UInt32@,System.Int64@,LTR.IO.ImDisk.ImDiskFlags@,System.Char@,System.String@)">
+	<summary>
+ Retrieves properties for an existing ImDisk virtual disk.
+ </summary>
+	<param name="DeviceNumber">Device number of ImDisk virtual disk to retrieve properties for.</param>
+	<param name="DiskSize">Size of virtual disk.</param>
+	<param name="TracksPerCylinder">Number of tracks per cylinder for virtual disk geometry.</param>
+	<param name="SectorsPerTrack">Number of sectors per track for virtual disk geometry.</param>
+	<param name="BytesPerSector">Number of bytes per sector for virtual disk geometry.</param>
+	<param name="ImageOffset">A skip offset if virtual disk data does not begin immediately at start of disk image file.
+ Frequently used with image formats like Nero NRG which start with a file header not used by ImDisk or Windows
+ filesystem drivers.</param>
+	<param name="Flags">Flags specifying properties for virtual disk. See comments for each flag value.</param>
+	<param name="DriveLetter">Drive letter if specified when virtual disk was created. If virtual disk was created
+ without a drive letter this parameter will be set to an empty Char value.</param>
+	<param name="Filename">Name of disk image file holding storage for file type virtual disk or used to create a
+ virtual memory type virtual disk.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.QueryDevice(System.UInt32)">
+	<summary>
+ Retrieves properties for an existing ImDisk virtual disk.
+ </summary>
+	<param name="DeviceNumber">Device number of ImDisk virtual disk to retrieve properties for.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.ChangeFlags(System.UInt32,LTR.IO.ImDisk.ImDiskFlags,LTR.IO.ImDisk.ImDiskFlags)">
+	<summary>
+ Modifies properties for an existing ImDisk virtual disk.
+ </summary>
+	<param name="DeviceNumber">Device number of ImDisk virtual disk to modify properties for.</param>
+	<param name="FlagsToChange">Flags for which to change values for.</param>
+	<param name="Flags">New flag values.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.ChangeFlags(System.UInt32,LTR.IO.ImDisk.ImDiskFlags,LTR.IO.ImDisk.ImDiskFlags,System.IntPtr)">
+	<summary>
+ Modifies properties for an existing ImDisk virtual disk.
+ </summary>
+	<param name="DeviceNumber">Device number of ImDisk virtual disk to modify properties for.</param>
+	<param name="FlagsToChange">Flags for which to change values for.</param>
+	<param name="Flags">New flag values.</param>
+	<param name="StatusControl">Optional handle to control that can display status messages during operation.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.ChangeFlags(System.String,LTR.IO.ImDisk.ImDiskFlags,LTR.IO.ImDisk.ImDiskFlags)">
+	<summary>
+ Modifies properties for an existing ImDisk virtual disk.
+ </summary>
+	<param name="MountPoint">Mount point of ImDisk virtual disk to modify properties for.</param>
+	<param name="FlagsToChange">Flags for which to change values for.</param>
+	<param name="Flags">New flag values.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.ChangeFlags(System.String,LTR.IO.ImDisk.ImDiskFlags,LTR.IO.ImDisk.ImDiskFlags,System.IntPtr)">
+	<summary>
+ Modifies properties for an existing ImDisk virtual disk.
+ </summary>
+	<param name="MountPoint">Mount point of ImDisk virtual disk to modify properties for.</param>
+	<param name="FlagsToChange">Flags for which to change values for.</param>
+	<param name="Flags">New flag values.</param>
+	<param name="StatusControl">Optional handle to control that can display status messages during operation.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.IsReadOnly(LTR.IO.ImDisk.ImDiskFlags)">
+	<summary>
+ Checks if Flags specifies a read only virtual disk.
+ </summary>
+	<param name="Flags">Flag field to check.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.IsRemovable(LTR.IO.ImDisk.ImDiskFlags)">
+	<summary>
+ Checks if Flags specifies a removable virtual disk.
+ </summary>
+	<param name="Flags">Flag field to check.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.IsModified(LTR.IO.ImDisk.ImDiskFlags)">
+	<summary>
+ Checks if Flags specifies a modified virtual disk.
+ </summary>
+	<param name="Flags">Flag field to check.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.GetDeviceType(LTR.IO.ImDisk.ImDiskFlags)">
+	<summary>
+ Gets device type bits from a Flag field.
+ </summary>
+	<param name="Flags">Flag field to check.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.GetDiskType(LTR.IO.ImDisk.ImDiskFlags)">
+	<summary>
+ Gets disk type bits from a Flag field.
+ </summary>
+	<param name="Flags">Flag field to check.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.GetProxyType(LTR.IO.ImDisk.ImDiskFlags)">
+	<summary>
+ Gets proxy type bits from a Flag field.
+ </summary>
+	<param name="Flags">Flag field to check.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.BuildInMemoryMBR(LTR.IO.NativeFileIO.Win32API.DISK_GEOMETRY,LTR.IO.NativeFileIO.Win32API.PARTITION_INFORMATION[],System.Byte[])">
+	<summary>
+    This function builds a Master Boot Record, MBR, in memory. The MBR will
+    contain a default Initial Program Loader, IPL, which could be used to boot
+    an operating system partition when the MBR is written to a disk.
+ </summary>
+	<param name="DiskGeometry">Pointer to a DISK_GEOMETRY structure that contains
+ information about logical geometry of the disk.
+ 
+ This function only uses the BytesPerSector, SectorsPerTrack and
+ TracksPerCylinder members.
+ 
+ This parameter can be Nothing/null if PartitionInfo parameter is Nothing/null
+ or references an empty array.</param>
+	<param name="PartitionInfo">Array of up to four PARTITION_INFORMATION structures
+ containing information about partitions to store in MBR partition table.
+ 
+ This function only uses the StartingOffset, PartitionLength, BootIndicator and
+ PartitionType members.
+ 
+ This parameter can be Nothing/null to create an empty MBR with just boot code
+ without any partition definitions.</param>
+	<param name="MBR">Pointer to memory buffer of at least 512 bytes where MBR will
+ be built.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.BuildInMemoryMBR(LTR.IO.NativeFileIO.Win32API.DISK_GEOMETRY,LTR.IO.NativeFileIO.Win32API.PARTITION_INFORMATION[])">
+	<summary>
+    This function builds a Master Boot Record, MBR, in memory. The MBR will
+    contain a default Initial Program Loader, IPL, which could be used to boot
+    an operating system partition when the MBR is written to a disk.
+ </summary>
+	<param name="DiskGeometry">Pointer to a DISK_GEOMETRY structure that contains
+ information about logical geometry of the disk.
+ 
+ This function only uses the BytesPerSector, SectorsPerTrack and
+ TracksPerCylinder members.
+ 
+ This parameter can be Nothing/null if PartitionInfo parameter is Nothing/null
+ or references an empty array.</param>
+	<param name="PartitionInfo">Array of up to four PARTITION_INFORMATION structures
+ containing information about partitions to store in MBR partition table.
+ 
+ This function only uses the StartingOffset, PartitionLength, BootIndicator and
+ PartitionType members.
+ 
+ This parameter can be Nothing/null to create an empty MBR with just boot code
+ without any partition definitions.</param>
+	<returns>Memory buffer containing built MBR.</returns>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.ConvertCHSToLBA(LTR.IO.NativeFileIO.Win32API.DISK_GEOMETRY,System.Byte[])">
+	<summary>
+ This function converts a CHS disk address to LBA format.
+ </summary>
+	<param name="DiskGeometry">Pointer to a DISK_GEOMETRY structure that contains
+ information about logical geometry of the disk. This function only uses the
+ SectorsPerTrack and TracksPerCylinder members.</param>
+	<param name="CHS">Pointer to CHS disk address in three-byte partition table
+ style format.</param>
+	<returns>Calculated LBA disk address.</returns>
+</member><member name="M:LTR.IO.ImDisk.ImDiskAPI.ConvertCHSToLBA(LTR.IO.NativeFileIO.Win32API.DISK_GEOMETRY,System.UInt32)">
+	<summary>
+ This function converts an LBA disk address to three-byte partition style CHS
+ format.
+ </summary>
+	<param name="DiskGeometry">Pointer to a DISK_GEOMETRY structure that contains
+ information about logical geometry of the disk. This function only uses the
+ SectorsPerTrack and TracksPerCylinder members.</param>
+	<param name="LBA">LBA disk address.</param>
+	<returns>Calculated CHS values expressed in an array of three bytes.</returns>
+</member><member name="T:LTR.IO.ImDisk.ImDiskAPI">
+	<summary>
+ ImDisk API for sending commands to ImDisk Virtual Disk Driver from .NET applications.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.#ctor(System.UInt32,System.IO.FileAccess)">
+	<summary>
+ Creates a new instance and opens an existing ImDisk virtual disk device.
+ </summary>
+	<param name="DeviceNumber">Device number of ImDisk virtual disk to open.</param>
+	<param name="AccessMode">Access mode to request for accessing disk object.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.#ctor(System.String,System.IO.FileAccess)">
+	<summary>
+ Creates a new instance and opens an existing disk device.
+ </summary>
+	<param name="MountPoint">Mount point of disk device to open.</param>
+	<param name="AccessMode">Access mode to request for accessing disk object.</param>
+</member><member name="P:LTR.IO.ImDisk.ImDiskDevice.DiskSize">
+	<summary>
+ Retrieves volume size of disk device.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.DismountVolumeFilesystem(System.Boolean)">
+	<summary>
+ Locks and dismounts filesystem on a volume. Upon successful return, further access to the device
+ can only be done through this device object instance until it is either closed (disposed) or lock is
+ released on the underlying handle.
+ </summary>
+	<param name="Force">Indicates if True that volume should be immediately dismounted even if it
+ cannot be locked. This causes all open handles to files on the volume to become invalid. If False,
+ successful lock (no other open handles) is required before attempting to dismount filesystem.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.GetRawDiskStream">
+	<summary>
+ Opens a ImDiskDeviceStream object around this ImDisk device that can be used to directly access disk data.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.SaveImageFile(System.IO.FileStream,System.UInt32)">
+	<summary>
+ Saves contents of disk device to an image file.
+ </summary>
+	<param name="ImageFile">FileStream object opened for writing where disk contents will be written.</param>
+	<param name="BufferSize">Buffer size to use when transferring data from disk device to file.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.SaveImageFile(System.IO.FileStream,System.UInt32,System.Action{System.Action{System.Boolean}})">
+	<summary>
+ Saves contents of disk device to an image file while pumping window messages between reads and writes.
+ </summary>
+	<param name="ImageFile">FileStream object opened for writing where disk contents will be written.</param>
+	<param name="BufferSize">Buffer size to use when transferring data from disk device to file.</param>
+	<param name="CancelAction">A boolean flag that will be checked between buffer reads/writes. If flag is set to True
+ operation will be cancelled and an exception thrown.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.SaveImageFile(Microsoft.Win32.SafeHandles.SafeFileHandle,System.UInt32)">
+	<summary>
+ Saves contents of disk device to an image file.
+ </summary>
+	<param name="ImageFile">Native file handle opened for writing where disk contents will be written.</param>
+	<param name="BufferSize">Buffer size to use when transferring data from disk device to file.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.SaveImageFile(Microsoft.Win32.SafeHandles.SafeFileHandle,System.UInt32,System.Action{System.Action{System.Boolean}})">
+	<summary>
+ Saves contents of disk device to an image file while pumping window messages between reads and writes.
+ </summary>
+	<param name="ImageFile">Native file handle opened for writing where disk contents will be written.</param>
+	<param name="BufferSize">Buffer size to use when transferring data from disk device to file.</param>
+	<param name="CancelAction">A boolean flag that will be checked between buffer reads/writes. If flag is set to True
+ operation will be cancelled and an exception thrown.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.SaveImageFile(System.String,System.UInt32)">
+	<summary>
+ Saves contents of disk device to an image file.
+ </summary>
+	<param name="ImageFile">Name of file to which disk contents will be written.</param>
+	<param name="BufferSize">Buffer size to use when transferring data from disk device to file.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.SaveImageFile(System.String,System.UInt32,System.Action{System.Action{System.Boolean}})">
+	<summary>
+ Saves contents of disk device to an image file while pumping window messages between reads and writes.
+ </summary>
+	<param name="ImageFile">Name of file to which disk contents will be written.</param>
+	<param name="BufferSize">Buffer size to use when transferring data from disk device to file.</param>
+	<param name="CancelAction">A boolean flag that will be checked between buffer reads/writes. If flag is set to True
+ operation will be cancelled and an exception thrown.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.SaveImageFile(System.String)">
+	<summary>
+ Saves contents of disk device to an image file.
+ </summary>
+	<param name="ImageFile">Name of file to which disk contents will be written.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.SaveImageFileInteractive(System.IntPtr,System.UInt32,System.Boolean)">
+	<summary>
+ This function saves the contents of a device to an image file. This is a
+ user-interactive function that displays dialog boxes where user can select
+ image file and other options.
+ </summary>
+	<param name="hWnd">Handle to existing window that will be parent to dialog
+ boxes etc.</param>
+	<param name="BufferSize">I/O buffer size to use when reading source disk. This
+ parameter is optional, if it is zero the buffer size to use
+ will automatically choosen.</param>
+	<param name="IsCdRomType">If this parameter is TRUE and the source device type cannot
+ be automatically determined this function will ask user for
+ a .iso suffixed image file name.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.SaveImageFileInteractive(System.IntPtr,System.Boolean)">
+	<summary>
+ This function saves the contents of a device to an image file. This is a
+ user-interactive function that displays dialog boxes where user can select
+ image file and other options.
+ </summary>
+	<param name="hWnd">Handle to existing window that will be parent to dialog
+ boxes etc.</param>
+	<param name="IsCdRomType">If this parameter is TRUE and the source device type cannot
+ be automatically determined this function will ask user for
+ a .iso suffixed image file name.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.SaveImageFileInteractive(System.IntPtr,System.UInt32)">
+	<summary>
+ This function saves the contents of a device to an image file. This is a
+ user-interactive function that displays dialog boxes where user can select
+ image file and other options.
+ </summary>
+	<param name="hWnd">Handle to existing window that will be parent to dialog
+ boxes etc.</param>
+	<param name="BufferSize">I/O buffer size to use when reading source disk. This
+ parameter is optional, if it is zero the buffer size to use
+ will automatically choosen.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.SaveImageFileInteractive(System.IntPtr)">
+	<summary>
+ This function saves the contents of a device to an image file. This is a
+ user-interactive function that displays dialog boxes where user can select
+ image file and other options.
+ </summary>
+	<param name="hWnd">Handle to existing window that will be parent to dialog
+ boxes etc.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.SaveImageFileInteractive(System.Boolean)">
+	<summary>
+ This function saves the contents of a device to an image file. This is a
+ user-interactive function that displays dialog boxes where user can select
+ image file and other options.
+ </summary>
+	<param name="IsCdRomType">If this parameter is TRUE and the source device type cannot
+ be automatically determined this function will ask user for
+ a .iso suffixed image file name.</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.SaveImageFileInteractive">
+	<summary>
+ This function saves the contents of a device to an image file. This is a
+ user-interactive function that displays dialog boxes where user can select
+ image file and other options.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDevice.ForceRemoveDevice">
+	<summary>
+ Forcefully removes ImDisk virtual disk from system even if it is use by other applications.
+ </summary>
+</member><member name="T:LTR.IO.ImDisk.ImDiskDevice">
+	<summary>
+ Represents ImDisk Virtual Disk Driver disk device objects.
+ </summary>
+</member><member name="P:LTR.IO.NativeFileIO.Win32API.PARTITION_INFORMATION.IsFTPartition">
+	<summary>
+ Indicates whether this partition entry represents a Windows NT fault tolerant partition,
+ such as mirror or stripe set.
+ </summary>
+	<value>
+ Indicates whether this partition entry represents a Windows NT fault tolerant partition,
+ such as mirror or stripe set.
+ </value>
+	<returns>True if this partition entry represents a Windows NT fault tolerant partition,
+ such as mirror or stripe set. False otherwise.</returns>
+</member><member name="P:LTR.IO.NativeFileIO.Win32API.PARTITION_INFORMATION.FTPartitionSubType">
+	<summary>
+ If this partition entry represents a Windows NT fault tolerant partition, such as mirror or stripe,
+ set, then this property returns partition subtype, such as PARTITION_IFS for NTFS or HPFS
+ partitions.
+ </summary>
+	<value>
+ If this partition entry represents a Windows NT fault tolerant partition, such as mirror or stripe,
+ set, then this property returns partition subtype, such as PARTITION_IFS for NTFS or HPFS
+ partitions.
+ </value>
+	<returns>If this partition entry represents a Windows NT fault tolerant partition, such as mirror or
+ stripe, set, then this property returns partition subtype, such as PARTITION_IFS for NTFS or HPFS
+ partitions.</returns>
+</member><member name="P:LTR.IO.NativeFileIO.Win32API.PARTITION_INFORMATION.IsContainerPartition">
+	<summary>
+ Indicates whether this partition entry represents a container partition, also known as extended
+ partition, where an extended partition table can be found in first sector.
+ </summary>
+	<value>
+ Indicates whether this partition entry represents a container partition.
+ </value>
+	<returns>True if this partition entry represents a container partition. False otherwise.</returns>
+</member><member name="M:LTR.IO.NativeFileIO.Win32API.SafeServiceHandle.#ctor(System.IntPtr,System.Boolean)">
+	<summary>
+ Initiates a new instance with an existing open handle.
+ </summary>
+	<param name="open_handle">Existing open handle.</param>
+	<param name="owns_handle">Indicates whether handle should be closed when this
+ instance is released.</param>
+</member><member name="M:LTR.IO.NativeFileIO.Win32API.SafeServiceHandle.#ctor">
+	<summary>
+ Creates a new empty instance. This constructor is used by native to managed
+ handle marshaller.
+ </summary>
+</member><member name="M:LTR.IO.NativeFileIO.Win32API.SafeServiceHandle.ReleaseHandle">
+	<summary>
+ Closes contained handle by calling CloseServiceHandle() Win32 API.
+ </summary>
+	<returns>Return value from CloseServiceHandle() Win32 API.</returns>
+</member><member name="T:LTR.IO.NativeFileIO.Win32API.SafeServiceHandle">
+	<summary>
+ Encapsulates a Service Control Management object handle that is closed by calling CloseServiceHandle() Win32 API.
+ </summary>
+</member><member name="M:LTR.IO.NativeFileIO.Win32Try(System.Boolean)">
+	<summary>
+ Encapsulates call to a Win32 API function that returns a BOOL value indicating success
+ or failure and where an error value is available through a call to GetLastError() in case
+ of failure. If value True is passed to this method it does nothing. If False is passed,
+ it calls GetLastError(), converts error code to a HRESULT value and throws a managed
+ exception for that HRESULT.
+ </summary>
+	<param name="result">Return code from a Win32 API function call.</param>
+</member><member name="M:LTR.IO.NativeFileIO.Win32Try``1(``0)">
+	<summary>
+ Encapsulates call to a Win32 API function that returns a value where failure
+ is indicated as a NULL return and GetLastError() returns an error code. If
+ non-zero value is passed to this method it just returns that value. If zero
+ value is passed, it calls GetLastError() and throws a managed exception for
+ that error code.
+ </summary>
+	<param name="result">Return code from a Win32 API function call.</param>
+</member><member name="M:LTR.IO.NativeFileIO.OpenFileHandle(System.String,System.IO.FileAccess,System.IO.FileShare,System.IO.FileMode,System.Boolean)">
+	<summary>
+ Calls Win32 API CreateFile() function and encapsulates returned handle in a SafeFileHandle object.
+ </summary>
+	<param name="FileName">Name of file to open.</param>
+	<param name="DesiredAccess">File access to request.</param>
+	<param name="ShareMode">Share mode to request.</param>
+	<param name="CreationDisposition">Open/creation mode.</param>
+	<param name="Overlapped">Specifies whether to request overlapped I/O.</param>
+</member><member name="M:LTR.IO.NativeFileIO.OpenBackupHandle(System.String,System.IO.FileAccess,System.IO.FileShare,System.IO.FileMode)">
+	<summary>
+ Calls Win32 API CreateFile() function to create a backup handle for a file or
+ directory and encapsulates returned handle in a SafeFileHandle object. This
+ handle can later be used in calls to Win32 Backup API functions or similar.
+ </summary>
+	<param name="FilePath">Name of file or directory to open.</param>
+	<param name="DesiredAccess">Access to request.</param>
+	<param name="ShareMode">Share mode to request.</param>
+	<param name="CreationDisposition">Open/creation mode.</param>
+</member><member name="M:LTR.IO.NativeFileIO.GetFileStreamLegalAccessValue(System.IO.FileAccess)">
+	<summary>
+ Converts FileAccess flags to values legal in constructor call to FileStream class.
+ </summary>
+	<param name="Value">FileAccess values.</param>
+</member><member name="M:LTR.IO.NativeFileIO.OpenFileStream(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)">
+	<summary>
+ Calls Win32 API CreateFile() function and encapsulates returned handle.
+ </summary>
+	<param name="FileName">Name of file to open.</param>
+	<param name="DesiredAccess">File access to request.</param>
+	<param name="ShareMode">Share mode to request.</param>
+	<param name="CreationDisposition">Open/creation mode.</param>
+</member><member name="M:LTR.IO.NativeFileIO.OpenFileStream(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32)">
+	<summary>
+ Calls Win32 API CreateFile() function and encapsulates returned handle.
+ </summary>
+	<param name="FileName">Name of file to open.</param>
+	<param name="DesiredAccess">File access to request.</param>
+	<param name="ShareMode">Share mode to request.</param>
+	<param name="CreationDisposition">Open/creation mode.</param>
+	<param name="BufferSize">Buffer size to specify in constructor call to FileStream class.</param>
+</member><member name="M:LTR.IO.NativeFileIO.OpenFileStream(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32,System.Boolean)">
+	<summary>
+ Calls Win32 API CreateFile() function and encapsulates returned handle.
+ </summary>
+	<param name="FileName">Name of file to open.</param>
+	<param name="DesiredAccess">File access to request.</param>
+	<param name="ShareMode">Share mode to request.</param>
+	<param name="CreationDisposition">Open/creation mode.</param>
+	<param name="BufferSize">Buffer size to specify in constructor call to FileStream class.</param>
+	<param name="Overlapped">Specifies whether to request overlapped I/O.</param>
+</member><member name="M:LTR.IO.NativeFileIO.OpenFileStream(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Boolean)">
+	<summary>
+ Calls Win32 API CreateFile() function and encapsulates returned handle.
+ </summary>
+	<param name="FileName">Name of file to open.</param>
+	<param name="DesiredAccess">File access to request.</param>
+	<param name="ShareMode">Share mode to request.</param>
+	<param name="CreationDisposition">Open/creation mode.</param>
+	<param name="Overlapped">Specifies whether to request overlapped I/O.</param>
+</member><member name="M:LTR.IO.NativeFileIO.AddProcessPaths(System.Boolean,System.String)">
+	<summary>
+ Adds a semicolon separated list of paths to the PATH environment variable of
+ current process. Any paths already in present PATH variable are not added again.
+ </summary>
+	<param name="AddPaths">Semicolon separated list of directory paths</param>
+	<param name="BeforeExisting">Indicates whether to insert new paths before existing path list or move
+ existing of specified paths first if True, or add new paths after existing path list if False.</param>
+</member><member name="M:LTR.IO.NativeFileIO.AddProcessPaths(System.Boolean,System.String[])">
+	<summary>
+ Adds a list of paths to the PATH environment variable of current process. Any
+ paths already in present PATH variable are not added again.
+ </summary>
+	<param name="AddPathsArray">Array of directory paths</param>
+	<param name="BeforeExisting">Indicates whether to insert new paths before existing path list or move
+ existing of specified paths first if True, or add new paths after existing path list if False.</param>
+</member><member name="M:LTR.IO.NativeFileIO.DismountVolumeFilesystem(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Boolean)">
+	<summary>
+ Locks and dismounts filesystem on a volume. Upon successful return, further access to the device
+ can only be done through the handle passed to this function until handle is closed or lock is
+ released.
+ </summary>
+	<param name="hDevice">Handle to device to lock and dismount.</param>
+	<param name="bForce">Indicates if True that volume should be immediately dismounted even if it
+ cannot be locked. This causes all open handles to files on the volume to become invalid. If False,
+ successful lock (no other open handles) is required before attempting to dismount filesystem.</param>
+</member><member name="M:LTR.IO.NativeFileIO.GetDiskGeometry(Microsoft.Win32.SafeHandles.SafeFileHandle)">
+	<summary>
+ Retrieves disk geometry.
+ </summary>
+	<param name="hDevice">Handle to device.</param>
+</member><member name="T:LTR.IO.NativeFileIO">
+	<summary>
+ Provides wrappers for Win32 file API. This makes it possible to open everyting that
+ CreateFile() can open and get a FileStream based .NET wrapper around the file handle.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.DLL.ImDiskAPIFlags.NoBroadcastNotify">
+	<summary>
+ If set, no broadcast window messages are sent on creation and removal of drive letters.
+ </summary>
+</member><member name="F:LTR.IO.ImDisk.DLL.ImDiskAPIFlags.ForceDismount">
+	<summary>
+ If set, RemoveDevice() will automatically force a dismount of filesystem invalidating
+ any open handles.
+ </summary>
+</member><member name="T:LTR.IO.ImDisk.DLL.ImDiskAPIFlags">
+	<summary>
+ ImDisk API behaviour flags.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDeviceStream.#ctor(Microsoft.Win32.SafeHandles.SafeFileHandle,System.IO.FileAccess)">
+	<summary>
+ Initializes an ImDiskDeviceStream object for an open disk device.
+ </summary>
+	<param name="SafeFileHandle">Open file handle for disk device.</param>
+	<param name="AccessMode">Access to request for stream.</param>
+</member><member name="P:LTR.IO.ImDisk.ImDiskDeviceStream.Length">
+	<summary>
+ Retrieves raw disk size.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.ImDiskDeviceStream.SetLength(System.Int64)">
+	<summary>
+ Not implemented.
+ </summary>
+</member><member name="T:LTR.IO.ImDisk.ImDiskDeviceStream">
+	<summary>
+ A FileStream derived class that represents disk devices by overriding properties and methods
+ where FileStream base implementation rely on file API not directly compatible with disk device
+ objects.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.ImDiskObject.#ctor(System.String,System.IO.FileAccess)">
+	<summary>
+ Opens specified Path with CreateFile Win32 API and encapsulates the returned handle
+ in a new ImDiskObject.
+ </summary>
+	<param name="Path">Path to pass to CreateFile API</param>
+	<param name="AccessMode">Access mode for opening and for underlying FileStream</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskObject.#ctor(Microsoft.Win32.SafeHandles.SafeFileHandle,System.IO.FileAccess)">
+	<summary>
+ Encapsulates a handle in a new ImDiskObject.
+ </summary>
+	<param name="Handle">Existing handle to use</param>
+	<param name="Access">Access mode for underlying FileStream</param>
+</member><member name="M:LTR.IO.ImDisk.ImDiskObject.CheckDriverVersion">
+	<summary>
+ Checks if version of running ImDisk Virtual Disk Driver servicing this device object is compatible with this API
+ library. If this device object is not created by ImDisk Virtual Disk Driver this method returns False.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.ImDiskObject.Close">
+	<summary>
+ Close device object.
+ </summary>
+</member><member name="T:LTR.IO.ImDisk.ImDiskObject">
+	<summary>
+ Base class that represents ImDisk Virtual Disk Driver created device objects.
+ </summary>
+</member><member name="M:LTR.IO.ImDisk.ImDiskControl.#ctor">
+	<summary>
+ Creates a new instance and opens ImDisk Virtual Disk Driver control device object.
+ </summary>
+</member><member name="T:LTR.IO.ImDisk.ImDiskControl">
+	<summary>
+ Represents ImDisk Virtual Disk Driver control device object.
+ </summary>
+</member>
+</members>
+</doc>
