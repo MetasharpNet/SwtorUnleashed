@@ -1,0 +1,495 @@
+﻿:: SCRIPT VERSION 4.0.0 @ 21-03-2012
+:: SWTOR FORUM THREAD: http://www.swtor.com/community/showthread.php?t=154568
+:: SCRIPT INSTRUCTION: http://www.swtor.com/community/showpost.php?p=2892331
+:: Use the thread for questions, feedback or debugging.
+
+@echo off
+color f0
+
+:: ==================================================================================
+:: USER SETTINGS [ set <varname>=<value>  ; Do not add spaces around the = sign !! ]
+:: ==================================================================================
+
+:: Start SWOTR's Launcher after mounting the ramdrive
+:: use 'set AutoLaunch=yes' or 'set AutoLaunch=no'
+set AutoLaunch=no
+
+:: Give the diskletter you want to use as ramdisk
+:: Give a letter followed by a colon (default is T:)
+set RamDrive=T:
+
+:: Give the ramdisk size, [interger+suffix] M for MegaByte or G for GigaByte
+:: - only adding cache (default):   1500M
+:: - Cache + Fx asset:              1600M
+:: - Cache + Fx + Dynamic:          4G
+:: - Cache + Dynamic:               4G
+set RamSize=1500M
+
+:: Add asset files, make sure RamSize if of sufficient size!
+:: To include asset files use 'set AssetFileXX=name_of_asset' where XX represents
+:: the number of asset file that has to be included starting with '01'. (leave out .tor)
+:: Example; set AssetFile01=swtor_main_art_fx_1 to include fx asset file to the ramdisk.
+:: predefined asset files remove the double colon (::) to uncomment it and add it
+
+
+::set AssetFile01=swtor_main_art_fx_1
+::set AssetFile02=swtor_main_art_dynamic_cape_1
+::set AssetFile03=swtor_main_art_dynamic_chest_1
+::set AssetFile04=swtor_main_art_dynamic_chest_tight_1
+::set AssetFile05=swtor_main_art_dynamic_hand_1
+::set AssetFile06=swtor_main_art_dynamic_head_1
+::set AssetFile07=swtor_main_art_dynamic_lower_1
+::set AssetFile08=swtor_main_art_dynamic_mags_1
+
+
+:: Use Imdisk, if set to 'no' it will skip the creation of a ramdisk by using Imdisk.
+:: So an user has to create a ramdisk before hand with the right amount of size
+:: and press y during confirmation while executing this script.
+set UseImdisk=yes
+
+:: Override Installpath for use when this script cannot read the path from registery.
+:: This can happen because a reinstall of Windows while SWTOR was on another disk.
+:: To use, add the complete path (no quotes) behind 'set InstallPath=' for example:
+:: set InstallPath=C:\Program Files (x86)\Electronic Arts\BioWare\Star Wars - The Old Republic
+set InstallPath=
+
+:: ==================================================================================
+:: GET INSTALLPATH AND LOCALPATH FROM REGISTERY
+:: ==================================================================================
+:: Get SWTOR installation path, if manually given skip this
+if defined InstallPath goto OverrideInstallPath
+for /F "skip=2 tokens=3,*" %%i in ('reg query "HKEY_LOCAL_MACHINE\software\wow6432node\bioware\star wars-the old republic" /v "Install Dir" 2^>nul') do set InstallPath=%%j
+if not defined InstallPath goto ErrorInstallPath
+
+:OverrideInstallPath
+:: Get local appdata path
+for /F "skip=2 tokens=3,*" %%i in ('reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v "Local AppData" 2^>nul') do set AppLocal=%%j
+if not defined AppLocal goto ErrorAppLocalPath
+
+:: Validate found/given installation path
+if not exist "%InstallPath%\launcher.exe" goto ErrorWrongInstallPath
+
+:: ==================================================================================
+:: BASIC SYSTEM VALIDATIONS (64bit test, ntfs test, imdisk test)
+:: ==================================================================================
+:: Check if the used system is 64bit
+if not %PROCESSOR_ARCHITECTURE% == AMD64 goto ErrorNo64Bit
+
+:: NTFS check for both local drive and SWTOR drive
+if exist %AppLocal:~0,2%\swtorramdiskntfstest.temp del %AppLocal:~0,2%\swtorramdiskntfstest.temp
+@echo 1 > %AppLocal:~0,2%\swtorramdiskntfstest.temp:stream
+if not exist %AppLocal:~0,2%\swtorramdiskntfstest.temp goto ErrorNTFS
+del %AppLocal:~0,2%\swtorramdiskntfstest.temp
+
+if exist %InstallPath:~0,2%\swtorramdiskntfstest.temp del %InstallPath:~0,2%\temp.temp
+@echo 1 > %InstallPath:~0,2%\swtorramdiskntfstest.temp:stream
+if not exist %InstallPath:~0,2%\swtorramdiskntfstest.temp goto ErrorNTFS
+del %InstallPath:~0,2%\swtorramdiskntfstest.temp
+
+:: Check if Imdisk is installed (imdisk.exe in system32)
+if %UseImdisk% == no goto SkipImdiskCheck
+if not exist "%SYSTEMROOT%\system32\imdisk.exe" goto ErrorNoImdisk
+:SkipImdiskCheck
+
+:: ==================================================================================
+:: VARIABLE
+:: ==================================================================================
+:: Create variable for assetfile errors
+set "AssetError="
+
+:: ==================================================================================
+:: USER MENU
+:: ==================================================================================
+:MENU
+cls
+echo  ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+echo  º                                                                            º
+echo  º          RAMDISK SETUP OR REMOVAL FOR STAR WARS THE OLD REPUBLIC           º
+echo  º                               VERSION: 4.0.0                               º
+echo  º                                                                            º
+echo  º                Created by: Ocmer_   Forumthread: Lemon_King                º
+echo  º                                                                            º
+echo  ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+echo.
+echo Script Settings:
+echo     - Ramdisk driveletter:    %RamDrive%
+echo     - Ramdisk size:           %RamSize%
+echo     - Auto start Launcher:    %AutoLaunch%
+echo.
+echo Menu:
+echo     [S] Setup and prepare SWTOR for a ramdisk.
+echo     [R] Remove the ramdisk setup for SWTOR.
+echo     [M] Mount a ramdrive for SWTOR (separate smaller script available!)
+echo     [D] Dismount the ramdrive to free memory (Mount again if you want to play)
+echo     [Q] Quit this script.
+echo.
+echo If everything is executed correctly without any errors, this script will close.
+echo This script only notifies the user when an error occurred.
+echo.
+choice /c:srmdq /n /m "Press one of the menu items:"
+if errorlevel 5 goto EOS
+if errorlevel 4 goto DISMOUNT
+if errorlevel 3 goto MOUNT
+if errorlevel 2 goto REMOVE
+if errorlevel 1 goto SETUP
+
+:: ==================================================================================
+:: SETUP RAMDISK
+:: ==================================================================================
+:SETUP
+cls
+
+:: Pre warning for use with ALL-IN-ONE version 4.0.0 and up
+:: As asset files are not fixed anymore, extra caution has to be taken
+echo Running the setup with this ALL-IN-ONE batchscript version 4.0.0 and up extra
+echo caution has to be taken into account. Therefor the following question:
+echo.
+echo Do you run this setup without running SWTOR with a ramdisk setup?
+echo.
+echo If you do press y to continue the setup.
+echo.
+echo If you don't, please remove the setup first before making any changes to this
+echo batchscript or useing the setup again. If you did make changes please put the
+echo settings back how they were when you ran the setup.
+echo.
+choice /c:yn /m "Do you run a SWTOR without a ramdisk or you removed it first"
+if errorlevel 2 goto MENU
+if errorlevel 1 goto ContinueSetup1
+
+:ContinueSetup1
+
+:: Check if the user uses another ramdisk program
+:: If not start with dismounting a current ramdrive to start fresh, then create
+if %UseImdisk% == yes (
+  if exist %RamDrive% imdisk -D -m %RamDrive%
+  imdisk -a -s %RamSize% -m %RamDrive% -p "/v:SWTOR_RAM /fs:ntfs /q /y"
+) else (
+  choice /c:yn /m "Did you mount a ramdrive with sufficient size already"
+  if errorlevel 2 goto MENU
+  if errorlevel 1 goto ContinueSetup2
+)
+
+:ContinueSetup2
+
+:: Create ramdisk folders, needed to link local to ramdisk
+mkdir "%RamDrive%\SWTOR\swtor"
+
+:: Check if local SWTOR is a junction already, if not create a fresh copy of it
+for %%F in ("%AppLocal%\SWTOR") do set ATTRIBS=%%~aF
+if %ATTRIBS:~8,1% == - (
+  if exist "%AppLocal%\SWTOR_Original" rmdir "%AppLocal%\SWTOR_Original" /S /Q
+  ren "%AppLocal%\SWTOR" SWTOR_Original
+)
+
+:: If for some reason SWTOR_Original does not exist on this point, recreate it
+:: Tho settings will be lost now if this line has to be executed!
+if not exist "%AppLocal%\SWTOR_Original" mkdir "%AppLocal%\SWTOR_Original\swtor\settings"
+
+:: If an older junction exist of local SWTOR delete it and recreate it to ramdisk
+if exist "%AppLocal%\SWTOR" rmdir "%AppLocal%\SWTOR" /S /Q
+mklink /J "%AppLocal%\SWTOR" "%RamDrive%\SWTOR"
+
+:: Create settings (from ramdisk) junction to SWTOR_Original in local
+mklink /J "%RamDrive%\SWTOR\swtor\settings" "%AppLocal%\SWTOR_Original\swtor\settings"
+
+:: Delete DiskCacheArena (regardless if original or symlink) and create a symlink to ramdrive
+if exist "%InstallPath%\swtor\DiskCacheArena" del "%InstallPath%\swtor\DiskCacheArena"
+mklink "%InstallPath%\swtor\DiskCacheArena" "%ramdrive%\DiskCacheArena"
+
+:: Add asset files if user has set the vars
+for /F "usebackq tokens=1* delims==" %%i in (`set AssetFile`) do (
+	call :CreateLink %%j
+)
+
+:: Copy asset files to the ramdisk if user has set the vars
+for /F "usebackq tokens=1* delims==" %%i in (`set AssetFile`) do (
+	call :CopyAsset %%j
+)
+
+:: Check if there were any asset file errors during copying
+if defined AssetError goto ErrorAssetMsgCopy
+
+:: Check if the user wants to start the launcher after mounting
+if %AutoLaunch% == yes goto LAUNCH
+
+:: End Of Script
+goto EOS
+
+:: ==================================================================================
+:: REMOVE RAMDISK
+:: ==================================================================================
+:REMOVE
+cls
+
+:: Dismount the ramdrive if the drive exists and the user is using Imdisk
+if %UseImdisk% == yes (
+  if exist %RamDrive% imdisk -D -m %RamDrive%
+)
+
+:: Delete DiskArenaCache, regardless if original or symlink
+if exist "%InstallPath%\swtor\DiskCacheArena" del "%InstallPath%\swtor\DiskCacheArena"
+
+:: Delete local SWTOR link
+for %%F in ("%AppLocal%\SWTOR") do set ATTRIBS=%%~aF
+if %ATTRIBS:~8,1% == l (
+  rmdir "%AppLocal%\SWTOR" /S /Q
+  if not exist "%AppLocal%\SWTOR_Original" mkdir "%AppLocal%\SWTOR\swtor\settings"
+  if exist "%AppLocal%\SWTOR_Original" ren "%AppLocal%\SWTOR_Original" SWTOR
+) else (
+  if exist "%AppLocal%\SWTOR_Original" rmdir "%AppLocal%\SWTOR_Original" /S /Q
+)
+
+:: Restore Asset files 
+for /F "usebackq tokens=1* delims==" %%i in (`set AssetFile`) do (
+	call :RemoveLink %%j
+)
+
+:: Check if there were any asset file errors during removing
+if defined AssetError goto ErrorAssetMsgRemove
+
+:: End Of Script
+goto EOS
+
+:: ==================================================================================
+:: MOUNT RAMDISK FOR SWTOR
+:: ==================================================================================
+:MOUNT
+cls
+
+:: Check if the user uses another ramdisk program
+:: If not start with dismounting a current ramdrive to start fresh, then create
+if %UseImdisk% == yes (
+  if exist %RamDrive% imdisk -D -m %RamDrive%
+  imdisk -a -s %RamSize% -m %RamDrive% -p "/v:SWTOR_RAM /fs:ntfs /q /y"
+)
+
+:: Create ramdisk folders
+mkdir "%RamDrive%\SWTOR\swtor"
+
+:: Create settings junction to SWTOR_Original in local
+mklink /J "%RamDrive%\SWTOR\swtor\settings" "%AppLocal%\SWTOR_Original\swtor\settings"
+
+:: Copy asset files to the ramdisk if user has set the vars
+for /F "usebackq tokens=1* delims==" %%i in (`set AssetFile`) do (
+	call :CopyAsset %%j
+)
+
+:: Check if there were any asset file errors during copying
+if defined AssetError goto ErrorAssetMsgCopy
+
+:: Check if the user wants to start the launcher after mounting
+if %AutoLaunch% == yes goto LAUNCH
+
+:: End Of Script
+goto EOS
+
+:: ==================================================================================
+:: DISMOUNT THE RAMDRIVE TO FREE MEMORY BETWEEN GAME SESSIONS
+:: ==================================================================================
+:DISMOUNT
+cls
+
+imdisk -D -m %RamDrive%
+goto EOS
+
+:: ==================================================================================
+:: MESSAGES
+:: ==================================================================================
+:ErrorNo64Bit
+cls
+echo  ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+echo  º                                                                            º
+echo  º                                   ERROR                                    º
+echo  º                                                                            º
+echo  ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+echo.
+echo This script is currently written only for 64bit users of Windows, and having
+echo more than 6GB of internal RAM available. Reason is because the creating a
+echo ramdisk in this current state does not use 'hidden memory' on 32bit systems.
+echo.
+echo If this error not correct, please post this error in the ramdisk thread created
+echo by Lemon_King. You can find the link on the first line of this script.
+pause
+goto EOS
+
+:ErrorNTFS
+cls
+echo  ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+echo  º                                                                            º
+echo  º                                   ERROR                                    º
+echo  º                                                                            º
+echo  ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+echo.
+echo This script has determinate that either the disk where your local appdata or
+echo the disk where you installed SWTOR does not have NTFS as filesystem. Creating
+echo links can only be done with a NTFS filesystem, hence the check.
+echo.
+echo If this error not correct, please post this error in the ramdisk thread created
+echo by Lemon_King. You can find the link on the first line of this script.
+echo.
+pause
+goto EOS
+
+:ErrorNoImdisk
+cls
+echo  ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+echo  º                                                                            º
+echo  º                                   ERROR                                    º
+echo  º                                                                            º
+echo  ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+echo.
+echo Please install Imdisk prior to executing this script, as it uses Imdisk.
+echo.
+echo This script could not find imdisk.exe in system32 thus thinking Imdisk is not
+echo yet installed on this machine, and stopped the script.
+echo.
+echo If this error not correct, please post this error in the ramdisk thread created
+echo by Lemon_King. You can find the link on the first line of this script.
+pause
+goto EOS
+
+:ErrorInstallPath
+cls
+echo  ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+echo  º                                                                            º
+echo  º                                   ERROR                                    º
+echo  º                                                                            º
+echo  ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+echo.
+echo Could not find the installation path of SWTOR, by reading the registery.
+echo.
+echo This can come if you installed SWTOR on a different disk than the OS, and by
+echo reinstalling Windows afterwards, the registery entry is not made.
+echo.
+echo To manually add the installation path to this scrip look at the usersettings,
+echo of this batchscript, how to add manually an installation path.
+echo.
+pause
+goto EOS
+
+:ErrorWrongInstallPath
+cls
+echo  ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+echo  º                                                                            º
+echo  º                                   ERROR                                    º
+echo  º                                                                            º
+echo  ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+echo.
+echo The found (by registery) or given (manual added at settings) installationpath
+echo could not find launcher.exe thus the found/given installationpath is wrong.
+echo.
+echo If you did not add manually an installationpath in the scrip settings, please
+echo add it now, as the one in the registery is wrong.
+echo.
+echo If you did add it manually, please recheck the given installationpath.
+echo.
+pause
+goto EOS
+
+:ErrorAppLocalPath
+cls
+echo  ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+echo  º                                                                            º
+echo  º                                   ERROR                                    º
+echo  º                                                                            º
+echo  ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+echo.
+echo Could not find the path to local application data, by reading the registery.
+echo.
+echo Please follow the manual steps written out by Lemon_King on the SWTOR forums,
+echo you can find the link on the first line of this script.
+echo.
+pause
+goto EOS
+
+:ErrorAssetMsgCopy
+cls
+echo  ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+echo  º                                                                            º
+echo  º                                   ERROR                                    º
+echo  º                                                                            º
+echo  ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+echo.
+echo This script could not find an original renamed asset file on your computer.
+echo This is needed to copy them to the ramdisk as the game will look there now.
+echo.
+echo Please add the missing asset files listed below with the suffix _ORIG.tor to
+echo the Asset folder that can be found at the root folder of the game.
+echo.
+echo The missing asset file(s) are:
+echo %AssetError%
+echo.
+pause
+goto EOS
+
+:ErrorAssetMsgRemove
+cls
+echo  ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+echo  º                                                                            º
+echo  º                                   ERROR                                    º
+echo  º                                                                            º
+echo  ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+echo.
+echo This script could not find an original renamed asset file on your computer.
+echo This is needed to rename it back as the link is removed already.
+echo.
+echo Please add the missing asset files listed below with the without the suffix
+echo _ORIG.tor to the Asset folder that can be found at the root folder of the game.
+echo.
+echo The missing asset file(s) are:
+echo %AssetError%
+echo.
+pause
+goto EOS
+
+:: ==================================================================================
+:: LAUNCH THE SWTOR LAUNCHER
+:: ==================================================================================
+:LAUNCH
+set InstallDrive=%InstallPath:~0,2%
+%InstallDrive%
+cd %InstallPath%
+start "" "%InstallPath%\launcher.exe" /MIN
+goto EOS
+
+:: ==================================================================================
+:: FUNCTIONS TO CALL
+:: ==================================================================================
+:CreateLink
+for %%F in ("%InstallPath%\Assets\%1.tor") do set ATTRIBS=%%~aF
+if %ATTRIBS:~8,1% == l (
+  del "%InstallPath%\Assets\%1"
+  mklink "%InstallPath%\Assets\%1.tor" "%RamDrive%\%1.tor"
+) else (
+  if exist "%InstallPath%\Assets\%1_ORIG.tor" del "%InstallPath%\Assets\%1_ORIG.tor"
+  ren "%InstallPath%\Assets\%1.tor" "%1_ORIG.tor"
+  mklink "%InstallPath%\Assets\%1.tor" "%RamDrive%\%1.tor"
+)
+goto :eof
+:: end of function CreateLink
+
+:RemoveLink
+for %%F in ("%InstallPath%\Assets\%1.tor") do set ATTRIBS=%%~aF
+if %ATTRIBS:~8,1% == l (
+  del "%InstallPath%\Assets\%1.tor"
+  if not exist "%InstallPath%\Assets\%1_ORIG.tor" set "AssetError=%AssetError% %1.tor"
+  ren "%InstallPath%\Assets\%1_ORIG.tor" "%1.tor"
+) else (
+  if exist "%InstallPath%\Assets\%1_ORIG.tor" del "%InstallPath%\Assets\%1_ORIG.tor"
+)
+goto :eof
+:: end of function RemoveLink
+
+:CopyAsset
+if not exist "%InstallPath%\Assets\%1_ORIG.tor" set "AssetError=%AssetError% %1_ORIG.tor"
+copy "%InstallPath%\Assets\%1_ORIG.tor" "%RamDrive%"
+ren "%RamDrive%\%1_ORIG.tor" "%1.tor"
+goto :eof
+:: end of function CopyAsset
+
+:: ==================================================================================
+:: END OF SCRIPT
+:: ==================================================================================
+:EOS
+exit
+

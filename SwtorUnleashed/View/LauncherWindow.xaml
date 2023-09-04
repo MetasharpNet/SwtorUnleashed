@@ -1,0 +1,68 @@
+﻿<Window
+    xmlns:d    ="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x    ="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns      ="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:mc   ="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+    xmlns:i    ="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:local="clr-namespace:SwtorUnleashed.ViewModel"
+    x:Class    ="SwtorUnleashed.View.LauncherWindow"
+    x:Name     ="_window"
+    Title="{Binding Path=WindowTitle}"
+    Height="150" Width="600" ResizeMode="NoResize" WindowStyle="None" Visibility="Visible"
+	AllowsTransparency="True" Background="{x:Null}" Foreground="{x:Null}" Opacity="1" AllowDrop="True"
+	WindowStartupLocation="Manual"
+    Icon="/SwtorUnleashed;component/images/swtor_512x512.ico"
+	MouseLeftButtonDown="Window_MouseLeftButtonDown" >
+    <!-- EVENT LOADED -->
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Path=Commands.OnWindowLoaded, Mode=Default}" CommandParameter="{Binding ElementName=_window, Mode=OneWay}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <!-- VIEW MODEL -->
+    <Window.DataContext>
+        <local:LauncherViewModel/>
+    </Window.DataContext>
+    <!-- VIEW -->
+	<Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Buttons.xaml" />
+                <ResourceDictionary Source="LauncherButtons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+	</Window.Resources>
+	<Grid Opacity="0.995">
+		<Canvas x:Name="canvasLauncher" HorizontalAlignment="Left" Height="150" UseLayoutRounding="False" VerticalAlignment="Top" Width="600">
+			<Canvas x:Name="canvasBackground" ClipToBounds="True" HorizontalAlignment="Left" Height="150" UseLayoutRounding="False" VerticalAlignment="Top" Width="600">
+				<Image x:Name="imageBackground" Height="150" Source="images/launcher_background.png" Stretch="Fill" Width="600"/>
+				<Image Height="137" Canvas.Left="444" Source="images/logoLauncher.png" Stretch="Fill" Width="165"/>
+                <TextBlock Name="textBlockAuthorizedByBioWareUS" Canvas.Left="8" Canvas.Top="129"> 
+                    <Hyperlink Command="{Binding Path=Commands.OnAuthorizedByBioWareUSClick}" Foreground="Yellow" >
+                        <TextBlock Text="Authorized by BioWare" Canvas.Left="6" Canvas.Top="122" Height="28" Foreground="Yellow" ></TextBlock>
+                    </Hyperlink> 
+                </TextBlock>
+                <TextBlock Name="textBlockAuthorizedByBioWareFR" Canvas.Left="136" Canvas.Top="129"> 
+                    <Hyperlink Command="{Binding Path=Commands.OnAuthorizedByBioWareFRClick}" Foreground="Yellow" >
+                        <TextBlock Text="Autorisé par BioWare" Canvas.Left="6" Canvas.Top="122" Height="28" Foreground="Yellow" ></TextBlock>
+                    </Hyperlink> 
+                </TextBlock>
+
+            </Canvas>
+            <Button x:Name="buttonQuit" Content="X" Height="21" Canvas.Left="573" Canvas.Top="6" Width="21" IsCancel="True" Foreground="Red" FontWeight="Bold" Click="buttonQuit_Click" BorderThickness="0" Opacity="0.695" >
+            	<Button.BorderBrush>
+            		<SolidColorBrush Color="Black" Opacity="0"/>
+            	</Button.BorderBrush>
+            	<Button.Background>
+            		<SolidColorBrush Color="#FF272727"/>
+            	</Button.Background>
+            </Button>
+            <Button            x:Name="buttonAbout" Height="29" Canvas.Left="31" Style="{DynamicResource styleButtonAbout}" Canvas.Top="57" Width="129" Click="buttonAbout_Click" />
+			<Button Command="{Binding Path=Commands.OnRemoveQuitClick}"      x:Name="buttonRemove" Height="29" Canvas.Left="31" Style="{DynamicResource styleButtonRemove}" Width="129" Canvas.Top="8"/>
+            <Button Command="{Binding Path=Commands.OnSwtorRetailClick}"     x:Name="buttonRetail" Height="81" Canvas.Left="280" Style="{DynamicResource styleButtonRetail}" Canvas.Top="27" Width="82"/>
+            <Button x:Name="buttonSettings" Height="29" Canvas.Left="31" Style="{DynamicResource styleButtonSettings}" Canvas.Top="84" Width="129" Click="buttonSettings_Click" />
+            <Button Command="{Binding Path=Commands.OnSwtorUnleashedClick}"  x:Name="buttonUnleashed" Height="81" Canvas.Left="373" Style="{DynamicResource styleButtonUnleashed}" Canvas.Top="25" Width="82"/>
+			<TextBlock Text="{Binding Path=WindowTitle}" Height="24" TextWrapping="Wrap" Canvas.Top="126" Width="333" FontFamily="fonts/#Visitor TT2 BRK" Foreground="White" FontSize="26.667" HorizontalAlignment="Right" Canvas.Left="267" VerticalAlignment="Center" />
+		</Canvas>
+	</Grid>
+</Window>
