@@ -7,4 +7,6 @@ This project requires ImDisk installed first. The version I used at the time is 
 
 Later versions might work : https://sourceforge.net/projects/imdisk-toolkit/
 
-Metasharp
+GitHub Downloads stats : https://hanadigital.github.io/grev/?user=MetasharpNet&repo=SwtorUnleashed
+
+Meta
